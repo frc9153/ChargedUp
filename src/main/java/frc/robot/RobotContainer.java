@@ -37,8 +37,8 @@ public class RobotContainer {
 
     m_drivetrain.setDefaultCommand(new DriveArcade(
       m_drivetrain,
-      () -> -m_driverController.getRawAxis(1),
-      () -> -m_driverController.getRawAxis(0)
+      () -> -m_driverController.getRawAxis(Constants.Control.moveAxis),
+      () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)
     ));
   }
 
