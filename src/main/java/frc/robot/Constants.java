@@ -37,4 +37,25 @@ public final class Constants {
 
     public static final double clawPIDEpsilon = 0.001;
   }
+
+  public static class Shoulder {
+    /* TODO: These PID-based motor systems are suuuper similar.
+       Is there a way to make these generic and only specify changes
+       to the default? Inheritance? */
+    public static final int shoulderMotorID = 5;
+
+    public static final double shoulderP = 10.0;
+    public static final double shoulderI = 0.0;
+    public static final double shoulderD = 0.0;
+    public static final double shoulderIZone = 0.0;
+    public static final double shoulderFF = 0.0;
+
+    public static final double minShoulderSpeed = -1.0;
+    public static final double maxShoulderSpeed = 1.0;
+
+    public static final double downShoulderSetPoint = 0.0; // TODO: Dummy value
+    public static final double upShoulderSetPoint = 1.0; // TODO: Dummy value
+
+    public static final double shoulderPIDEpsilon = 0.001;
+  }
 }

@@ -4,16 +4,16 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClawControl;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ShoulderControl;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shoulder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,6 +26,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final Drivetrain m_drivetrain = new Drivetrain();
   public final Claw m_claw = new Claw();
+  public final Shoulder m_shoulder = new Shoulder();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -59,6 +60,11 @@ public class RobotContainer {
     m_driverController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
     m_driverController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
 
+    // Shoulder
+    m_driverController.y().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint));   // Y - Shoulder UP!!!
+    m_driverController.b().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.downShoulderSetPoint)); // B - Shoulder DOWN!!!
+
+    // TODO: Extruderinator -- should use L and R triggers?
   }
 
   /**
