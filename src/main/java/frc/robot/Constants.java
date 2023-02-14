@@ -32,8 +32,8 @@ public final class Constants {
     public static final double minClawSpeed = -1.0;
     public static final double maxClawSpeed = 1.0;
 
-    public static final double closeClawSetPoint = 1.0;
-    public static final double openClawSetPoint = 0.0;
+    public static final double closeClawSetPoint = 1.0; // TODO: Dummy value
+    public static final double openClawSetPoint = 0.0; // TODO: Dummy value
 
     public static final double clawPIDEpsilon = 0.001;
   }

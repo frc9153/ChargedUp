@@ -29,7 +29,6 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Constants.Control.driverControllerPort);
   
@@ -49,13 +48,17 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    /*
+     * The Driver Controller should have mostly automatic controls with as few
+     * buttons to worry about as possible. The Operator Controller should have
+     * manual controls for each output as a failsafe; the Operator Controller
+     * should not be used unless a sensor fails, something gets misaligned, etc.
+     */
 
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // Claw
+    m_driverController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
+    m_driverController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
 
-    m_operatorController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
-    m_operatorController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
   }
 
   /**

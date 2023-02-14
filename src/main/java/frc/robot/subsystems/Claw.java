@@ -8,32 +8,33 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Claw extends SubsystemBase {
   private CANSparkMax m_clawMotor;
-  private SparkMaxPIDController m_clawPidController;
-  private SparkMaxAnalogSensor m_potentiometer;
+  private SparkMaxPIDController m_clawPIDController;
+  private SparkMaxAnalogSensor m_clawMotorPot;
   
   // Glorious hack because we can't read setpoint from motor controller
   private double m_setPoint;
 
   public Claw() {
-    m_clawMotor = new CANSparkMax(Constants.Claw.clawMotorID, null);
+    m_clawMotor = new CANSparkMax(Constants.Claw.clawMotorID, MotorType.kBrushless);
     
-    m_clawPidController = m_clawMotor.getPIDController();
-    m_potentiometer = m_clawMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
+    m_clawPIDController = m_clawMotor.getPIDController();
+    m_clawMotorPot = m_clawMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
 
     // PID Config setup
-    m_clawPidController.setP(Constants.Claw.clawP);
-    m_clawPidController.setI(Constants.Claw.clawI);
-    m_clawPidController.setD(Constants.Claw.clawD);
-    m_clawPidController.setIZone(Constants.Claw.clawIZone);
-    m_clawPidController.setFF(Constants.Claw.clawFF);
-    m_clawPidController.setOutputRange(Constants.Claw.minClawSpeed, Constants.Claw.maxClawSpeed);
-    m_clawPidController.setFeedbackDevice(m_potentiometer);
+    m_clawPIDController.setP(Constants.Claw.clawP);
+    m_clawPIDController.setI(Constants.Claw.clawI);
+    m_clawPIDController.setD(Constants.Claw.clawD);
+    m_clawPIDController.setIZone(Constants.Claw.clawIZone);
+    m_clawPIDController.setFF(Constants.Claw.clawFF);
+    m_clawPIDController.setOutputRange(Constants.Claw.minClawSpeed, Constants.Claw.maxClawSpeed);
+    m_clawPIDController.setFeedbackDevice(m_clawMotorPot);
 
     m_clawMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     
@@ -43,7 +44,7 @@ public class Claw extends SubsystemBase {
 
   public void setSetPoint(double setPoint) {
     m_setPoint = setPoint;
-    m_clawPidController.setReference(setPoint, ControlType.kPosition);
+    m_clawPIDController.setReference(setPoint, ControlType.kPosition);
   }
 
   public void setSpeed(double speed) {
@@ -51,7 +52,7 @@ public class Claw extends SubsystemBase {
   }
 
   public boolean isAtSetPoint() {
-    return Math.abs(m_setPoint - m_potentiometer.getPosition()) <= Constants.Claw.clawPIDEpsilon;
+    return Math.abs(m_setPoint - m_clawMotorPot.getPosition()) <= Constants.Claw.clawPIDEpsilon;
   }
 
   @Override

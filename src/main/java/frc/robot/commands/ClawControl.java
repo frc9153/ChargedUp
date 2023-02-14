@@ -28,7 +28,7 @@ public class ClawControl extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    // TODO: Should we be doing anything special here with the PID?
+    // TODO: Should we be doing anything special here with the PID loop?
   }
 
   @Override
