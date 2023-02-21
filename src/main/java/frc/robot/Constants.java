@@ -58,4 +58,22 @@ public final class Constants {
 
     public static final double shoulderPIDEpsilon = 0.001;
   }
+
+  public static class Extruderinator {
+    public static final int extruderMotorID = 5;
+
+    public static final double extruderP = 10.0;
+    public static final double extruderI = 0.0;
+    public static final double extruderD = 0.0;
+    public static final double extruderIZone = 0.0;
+    public static final double extruderFF = 0.0;
+
+    public static final double minExtruderSpeed = -1.0;
+    public static final double maxExtruderSpeed = 1.0;
+
+    public static final double downExtruderSetPoint = 0.0; // TODO: Dummy value
+    public static final double upExtruderSetPoint = 1.0; // TODO: Dummy value
+
+    public static final double extruderPIDEpsilon = 0.001;
+  }
 }
