@@ -71,8 +71,8 @@ public final class Constants {
     public static final double minExtruderSpeed = -1.0;
     public static final double maxExtruderSpeed = 1.0;
 
-    public static final double downExtruderSetPoint = 0.0; // TODO: Dummy value
-    public static final double upExtruderSetPoint = 1.0; // TODO: Dummy value
+    public static final double inExtruderSetPoint = 0.0; // TODO: Dummy value
+    public static final double outExtruderSetPoint = 1.0; // TODO: Dummy value
 
     public static final double extruderPIDEpsilon = 0.001;
   }

@@ -7,13 +7,17 @@ package frc.robot;
 import frc.robot.commands.ClawControl;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtruderinatorControl;
 import frc.robot.commands.ShoulderControl;
+import frc.robot.commands.YikesWeSmushedIt;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Extruderinator;
 import frc.robot.subsystems.Shoulder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +31,7 @@ public class RobotContainer {
   public final Drivetrain m_drivetrain = new Drivetrain();
   public final Claw m_claw = new Claw();
   public final Shoulder m_shoulder = new Shoulder();
+  public final Extruderinator m_extruderinator = new Extruderinator();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -56,15 +61,21 @@ public class RobotContainer {
      * should not be used unless a sensor fails, something gets misaligned, etc.
      */
 
-    // Claw
+    /* - Claw - */
     m_driverController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
     m_driverController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
 
-    // Shoulder
+    /* - Shoulder - */
     m_driverController.y().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint));   // Y - Shoulder UP!!!
     m_driverController.b().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.downShoulderSetPoint)); // B - Shoulder DOWN!!!
 
-    // TODO: Extruderinator -- should use L and R triggers?
+    /* - Extruderinator - */
+    // Reset on limit switch
+    final Trigger m_extruderinatorLimitSwitchTrigger = new Trigger(m_extruderinator::isSmushed);
+    m_extruderinatorLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_extruderinator));
+
+    m_driverController.leftTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.inExtruderSetPoint));   // Left Trigger - Schwooop in
+    m_driverController.rightTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)); // Right Trigger  - Khzzzzz out
   }
 
   /**

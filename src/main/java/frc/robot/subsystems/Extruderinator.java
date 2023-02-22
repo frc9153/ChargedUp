@@ -5,10 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
-import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 
@@ -18,28 +18,12 @@ import frc.robot.Constants;
 public class Extruderinator extends SubsystemBase {
   private CANSparkMax m_extruderMotor;
   private SparkMaxPIDController m_extruderPIDController;
-  private SparkMaxAnalogSensor m_extruderMotorPot;
   private SparkMaxLimitSwitch m_extruderLimitSwitch;
+  private RelativeEncoder m_extruderEncoder;
 
   private double m_setPoint;
 
   public Extruderinator() {
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-    // WIP WIP WIP WIP WIP WIP
-
-    // WW      WW IIIII PPPPPP  
-    // WW      WW  III  PP   PP 
-    // WW   W  WW  III  PPPPPP  
-    //  WW WWW WW  III  PP      
-    //   WW   WW  IIIII PP      
-                         
-
     /* The Extruderinator is a bit of a mystery to me as of now.
      * Here's what I'm writing this code under the presumption of:
      * - We're using Spark Maxes (Maxs? Maxs'?) as motor controllers
@@ -51,9 +35,9 @@ public class Extruderinator extends SubsystemBase {
 
     // TODO: No clue what the type is. Replace it when found!
     m_extruderLimitSwitch = m_extruderMotor.getReverseLimitSwitch(Type.kNormallyOpen);
+    m_extruderLimitSwitch.enableLimitSwitch(true);
 
     m_extruderPIDController = m_extruderMotor.getPIDController();
-    m_extruderMotorPot = m_extruderMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
 
     // PID Config setup
     m_extruderPIDController.setP(Constants.Extruderinator.extruderP);
@@ -65,7 +49,6 @@ public class Extruderinator extends SubsystemBase {
       Constants.Extruderinator.minExtruderSpeed,
       Constants.Extruderinator.maxExtruderSpeed
     );
-    m_extruderPIDController.setFeedbackDevice(m_extruderMotorPot);
 
     m_extruderMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     
@@ -82,8 +65,16 @@ public class Extruderinator extends SubsystemBase {
     m_extruderMotor.set(speed);
   }
 
+  public void setOrigin() {
+    m_extruderEncoder.setPosition(0.0);
+  }
+
+  public boolean isSmushed() {
+    return m_extruderLimitSwitch.isPressed();
+  }
+
   public boolean isAtSetPoint() {
-    return Math.abs(m_setPoint - m_extruderMotorPot.getPosition()) <= Constants.Extruderinator.extruderPIDEpsilon;
+    return Math.abs(m_setPoint - m_extruderEncoder.getPosition()) <= Constants.Extruderinator.extruderPIDEpsilon;
   }
 
   @Override
