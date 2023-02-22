@@ -19,12 +19,12 @@ public class ShoulderControl extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
-
-  @Override
-  public void execute() {
+  public void initialize() {
     m_shoulder.setSetPoint(m_targetPosition);
   }
+
+  @Override
+  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {

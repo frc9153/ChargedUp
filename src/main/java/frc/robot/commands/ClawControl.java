@@ -15,16 +15,17 @@ public class ClawControl extends CommandBase {
     m_claw = claw;
     m_targetPosition = targetPosition;
 
+    // Kv priority type thingey to cancel other commands that use this
     addRequirements(m_claw);
   }
 
   @Override
-  public void initialize() {}
-
-  @Override
-  public void execute() {
+  public void initialize() {
     m_claw.setSetPoint(m_targetPosition);
   }
+
+  @Override
+  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {
