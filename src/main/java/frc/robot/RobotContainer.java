@@ -4,10 +4,17 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
+import frc.robot.commands.ClawControl;
+import frc.robot.commands.DriveArcade;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtruderinatorControl;
+import frc.robot.commands.ShoulderControl;
+import frc.robot.commands.YikesWeSmushedIt;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Extruderinator;
+import frc.robot.subsystems.Shoulder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -21,34 +28,54 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  public final Drivetrain m_drivetrain = new Drivetrain();
+  public final Claw m_claw = new Claw();
+  public final Shoulder m_shoulder = new Shoulder();
+  public final Extruderinator m_extruderinator = new Extruderinator();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(Constants.Control.driverControllerPort);
+  
+  private final CommandXboxController m_operatorController =
+      new CommandXboxController(Constants.Control.operatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    m_drivetrain.setDefaultCommand(new DriveArcade(
+      m_drivetrain,
+      () -> -m_driverController.getRawAxis(Constants.Control.moveAxis),
+      () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)
+    ));
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    /*
+     * The Driver Controller should have mostly automatic controls with as few
+     * buttons to worry about as possible. The Operator Controller should have
+     * manual controls for each output as a failsafe; the Operator Controller
+     * should not be used unless a sensor fails, something gets misaligned, etc.
+     */
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    /* - Claw - */
+    m_driverController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
+    m_driverController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
+
+    /* - Shoulder - */
+    m_driverController.y().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint));   // Y - Shoulder UP!!!
+    m_driverController.b().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.downShoulderSetPoint)); // B - Shoulder DOWN!!!
+
+    /* - Extruderinator - */
+    // Reset on limit switch
+    final Trigger m_extruderinatorLimitSwitchTrigger = new Trigger(m_extruderinator::isSmushed);
+    m_extruderinatorLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_extruderinator));
+
+    m_driverController.leftTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.inExtruderSetPoint));   // Left Trigger - Schwooop in
+    m_driverController.rightTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)); // Right Trigger  - Khzzzzz out
   }
 
   /**
@@ -58,6 +85,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_autoCommand;
   }
 }
