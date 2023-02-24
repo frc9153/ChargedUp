@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.ClawControl;
 import frc.robot.commands.DriveArcade;
+import frc.robot.commands.EternalBalanceToggle;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ExtruderinatorControl;
 import frc.robot.commands.ShoulderControl;
@@ -15,6 +16,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Extruderinator;
 import frc.robot.subsystems.Shoulder;
+
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -32,6 +37,7 @@ public class RobotContainer {
   public final Claw m_claw = new Claw();
   public final Shoulder m_shoulder = new Shoulder();
   public final Extruderinator m_extruderinator = new Extruderinator();
+  public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -76,6 +82,10 @@ public class RobotContainer {
 
     m_driverController.leftTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.inExtruderSetPoint));   // Left Trigger - Schwooop in
     m_driverController.rightTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)); // Right Trigger  - Khzzzzz out
+
+    /* - Eternal Balance */
+
+    m_driverController.povUp().onTrue(new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
   }
 
   /**
