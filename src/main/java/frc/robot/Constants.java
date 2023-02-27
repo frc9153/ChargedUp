@@ -76,4 +76,10 @@ public final class Constants {
 
     public static final double extruderPIDEpsilon = 0.001;
   }
+
+  public static class EternalBalance {
+    // How much we gotta tip before we realize and run the other way
+    public static final double balanceAngleThreshold = 0.1;
+    public static final double balanceCompensation = 0.1;
+  }
 }

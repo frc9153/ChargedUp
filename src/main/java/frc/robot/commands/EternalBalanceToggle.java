@@ -7,11 +7,13 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class EternalBalanceToggle extends CommandBase {
   private final DoubleSupplier m_angleSupplier;
   private final Drivetrain m_drivetrain;
+  private boolean m_active = false;
 
   public EternalBalanceToggle(DoubleSupplier angleSupplier, Drivetrain drivetrain) {
     m_angleSupplier = angleSupplier;
@@ -20,13 +22,29 @@ public class EternalBalanceToggle extends CommandBase {
 
   @Override
   public void initialize() {
-    // TODO: Toggle
+    m_active = !m_active;
   }
 
   @Override
   public void execute() {
-    // TODO arcadeDrive based on pitch
-    // m_drivetrain.arcadeDrive(m_move.getAsDouble(), m_rotate.getAsDouble());
+    if (!m_active) {
+      return;
+    }
+
+    final double angle = m_angleSupplier.getAsDouble();
+
+    // Angle isn't substantial enough to move
+    if (Math.abs(angle) - Constants.EternalBalance.balanceAngleThreshold < 0) {
+      return;
+    }
+
+    final int sign = angle > 0 ? 1 : -1;
+
+    m_drivetrain.arcadeDrive(
+      // Forward if angle is positive, backward if angle is negative
+      Constants.EternalBalance.balanceCompensation * sign,
+      0.0
+    );
   }
 
   @Override
