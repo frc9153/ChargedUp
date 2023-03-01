@@ -43,6 +43,8 @@ public final class Constants {
        Is there a way to make these generic and only specify changes
        to the default? Inheritance? */
     public static final int shoulderMotorID = 5;
+    public static final int encoderDIOChannel = 0;
+    public static final double encoderDistancePerRotation = 4.0;
 
     public static final double shoulderP = 10.0;
     public static final double shoulderI = 0.0;
