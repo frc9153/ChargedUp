@@ -21,7 +21,7 @@ public final class Constants {
   }
 
   public static class Claw {
-    public static final int clawMotorID = 5;
+    public static final int clawMotorID = 7;
 
     public static final double clawP = 10.0;
     public static final double clawI = 0.0;
