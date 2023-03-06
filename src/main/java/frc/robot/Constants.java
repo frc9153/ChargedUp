@@ -62,7 +62,7 @@ public final class Constants {
   }
 
   public static class Extruderinator {
-    public static final int extruderMotorID = 5;
+    public static final int extruderMotorID = 6;
 
     public static final double extruderP = 10.0;
     public static final double extruderI = 0.0;
