@@ -45,6 +45,11 @@ public class Claw extends SubsystemBase {
     m_clawMotor.set(ControlMode.Position, m_setPoint);
   }
 
+  public void setSpeed(double speed) {
+    // TODO: Wrong controlmode for the job?
+    m_clawMotor.set(ControlMode.Velocity, speed);
+  }
+
   public boolean isAtSetPoint() {
     return Math.abs(m_setPoint - m_clawMotor.getSelectedSensorPosition()) <= Constants.Claw.clawPIDEpsilon;
   }

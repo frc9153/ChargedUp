@@ -12,6 +12,7 @@ import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -32,6 +33,8 @@ public class Extruderinator extends SubsystemBase {
      * - The limit switch is `kNormallyOpen`
      */
     m_extruderMotor = new CANSparkMax(Constants.Extruderinator.extruderMotorID, MotorType.kBrushless);
+
+    m_extruderEncoder = m_extruderMotor.getEncoder();
 
     // TODO: No clue what the type is. Replace it when found!
     m_extruderLimitSwitch = m_extruderMotor.getReverseLimitSwitch(Type.kNormallyOpen);
@@ -66,7 +69,7 @@ public class Extruderinator extends SubsystemBase {
   }
 
   public void setOrigin() {
-    m_extruderEncoder.setPosition(0.0);
+    //m_extruderEncoder.setPosition(0.0);
   }
 
   public boolean isSmushed() {
@@ -78,5 +81,8 @@ public class Extruderinator extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("Extruderinator Encoder Position", m_extruderEncoder.getPosition());
+    SmartDashboard.putBoolean("Reverse Limit Switch", m_extruderLimitSwitch.isPressed());
+  }
 }

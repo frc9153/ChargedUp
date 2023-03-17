@@ -4,28 +4,33 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shoulder;
 
-public class ShoulderControl extends CommandBase {
+public class ShoulderManualControl extends CommandBase {
   private final Shoulder m_shoulder;
-  private final double m_targetPosition;
+  private final DoubleSupplier m_rotate;
 
-  public ShoulderControl(Shoulder shoulder, double targetPosition) {
+  public ShoulderManualControl(Shoulder shoulder, DoubleSupplier rotate) {
     m_shoulder = shoulder;
-    m_targetPosition = targetPosition;
+    m_rotate = rotate;
 
     addRequirements(m_shoulder);
   }
 
   @Override
-  public void initialize() {
-    System.out.println("ARRRRRRRRRRRRRRGH");
-    m_shoulder.setSetPoint(m_targetPosition);
-  }
+  public void initialize() {}
 
   @Override
-  public void execute() {}
+  public void execute() {
+    double value = m_rotate.getAsDouble() / 10.0;
+
+    m_shoulder.setSpeed(value);
+    SmartDashboard.putNumber("Shoulder Axis Rot", value);
+  }
 
   @Override
   public void end(boolean interrupted) {

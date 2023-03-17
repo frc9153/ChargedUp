@@ -11,13 +11,16 @@ public final class Constants {
 
     public static final int moveAxis = 1;
     public static final int rotateAxis = 0;
+    public static final int shoulderAxis = -1;
+    public static final int extruderinatorAxis = -1;
+    public static final int clawAxis = 5;
   }
 
   public static class Drivetrain {
-    public static final int leftFrontMotorID = 4;
+    public static final int leftFrontMotorID = 2;
     public static final int leftBackMotorID = 3;
-    public static final int rightFrontMotorID = 1;
-    public static final int rightBackMotorID = 2;
+    public static final int rightFrontMotorID = 4;
+    public static final int rightBackMotorID = 1;
   }
 
   public static class Claw {
@@ -52,13 +55,13 @@ public final class Constants {
     public static final double shoulderIZone = 0.0;
     public static final double shoulderFF = 0.0;
 
-    public static final double minShoulderSpeed = -1.0;
-    public static final double maxShoulderSpeed = 1.0;
+    public static final double minShoulderSpeed = -0.1;
+    public static final double maxShoulderSpeed = 0.1;
 
-    public static final double downShoulderSetPoint = 0.0; // TODO: Dummy value
-    public static final double upShoulderSetPoint = 1.0; // TODO: Dummy value
+    public static final double downShoulderSetPoint = 0.4; // TODO: Dummy value
+    public static final double upShoulderSetPoint = 0.5; // TODO: Dummy value
 
-    public static final double shoulderPIDEpsilon = 0.001;
+    public static final double shoulderPIDEpsilon = 0.05;
   }
 
   public static class Extruderinator {
@@ -70,11 +73,11 @@ public final class Constants {
     public static final double extruderIZone = 0.0;
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -1.0;
-    public static final double maxExtruderSpeed = 1.0;
+    public static final double minExtruderSpeed = -0.2;
+    public static final double maxExtruderSpeed = 0.2;
 
     public static final double inExtruderSetPoint = 0.0; // TODO: Dummy value
-    public static final double outExtruderSetPoint = 1.0; // TODO: Dummy value
+    public static final double outExtruderSetPoint = 0.3; // TODO: Dummy value
 
     public static final double extruderPIDEpsilon = 0.001;
   }
