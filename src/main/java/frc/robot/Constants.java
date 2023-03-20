@@ -16,6 +16,12 @@ public final class Constants {
     // public static final int clawAxis = 5;
   }
 
+  public static class Autonomous {
+    public static final double sleepingSpeedForward = 0.1;
+    public static final double sleepingRotation = 0;
+    public static final double sleepingDuration = 15.0;
+  }
+
   public static class Drivetrain {
     public static final int leftFrontMotorID = 2;
     public static final int leftBackMotorID = 3;
@@ -46,9 +52,11 @@ public final class Constants {
   }
 
   public static class Shoulder {
-    /* TODO: These PID-based motor systems are suuuper similar.
-       Is there a way to make these generic and only specify changes
-       to the default? Inheritance? */
+    /*
+     * TODO: These PID-based motor systems are suuuper similar.
+     * Is there a way to make these generic and only specify changes
+     * to the default? Inheritance?
+     */
     public static final int shoulderMotorID = 5;
     public static final int encoderDIOChannel = 0;
     public static final double encoderDistancePerRotation = 4.0;

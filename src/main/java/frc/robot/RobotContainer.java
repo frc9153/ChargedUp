@@ -6,13 +6,11 @@ package frc.robot;
 
 import frc.robot.commands.ClawManualControl;
 import frc.robot.commands.DriveArcade;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ExtruderinatorManualControl;
 import frc.robot.commands.ShoulderManualControl;
 import frc.robot.commands.YikesWeSmushedIt;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Extruderinator;
 import frc.robot.subsystems.Shoulder;
 
@@ -35,14 +33,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final Drivetrain m_drivetrain = new Drivetrain();
   public final Claw m_claw = new Claw();
   public final Shoulder m_shoulder = new Shoulder();
   public final Extruderinator m_extruderinator = new Extruderinator();
   public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  public final Command asleepCommand = new DriveArcade(
+      m_drivetrain,
+      () -> Constants.Autonomous.sleepingSpeedForward,
+      () -> Constants.Autonomous.sleepingRotation).withTimeout(Constants.Autonomous.sleepingDuration);
 
   private final CommandXboxController m_driverController = new CommandXboxController(
       Constants.Control.driverControllerPort);
@@ -76,13 +75,11 @@ public class RobotContainer {
         () -> -m_driverController.getRawAxis(Constants.Control.moveAxis),
         () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)));
 
-
     /* - Claw - */
     m_driverController.leftTrigger()
         .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Left Trigger - Open
     m_driverController.rightTrigger()
         .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualCloseSpeed)); // Right Trigger - Close
-
 
     /* - Shoulder - */
     // m_driverController.y().onTrue(new ShoulderControl(m_shoulder,
@@ -97,15 +94,15 @@ public class RobotContainer {
         m_shoulder,
         () -> m_operatorController.getRawAxis(Constants.Control.shoulderAxis)));
 
-
     /* - Extruderinator - */
     // Reset on limit switch
     final Trigger m_extruderinatorLimitSwitchTrigger = new Trigger(m_extruderinator::isSmushed);
     m_extruderinatorLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_extruderinator));
 
     // m_extruderinator.setDefaultCommand(new ExtruderinatorManualControl(
-    //     m_extruderinator,
-    //     () -> m_operatorController.getRawAxis(Constants.Control.extruderinatorAxis)));
+    // m_extruderinator,
+    // () ->
+    // m_operatorController.getRawAxis(Constants.Control.extruderinatorAxis)));
 
     m_driverController.povUp().onTrue(new ExtruderinatorManualControl(
         m_extruderinator,
@@ -126,7 +123,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return m_autoCommand;
+    return asleepCommand;
   }
 }
