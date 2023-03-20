@@ -4,14 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.commands.ClawControl;
 import frc.robot.commands.ClawManualControl;
 import frc.robot.commands.DriveArcade;
-import frc.robot.commands.EternalBalanceToggle;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExtruderinatorControl;
 import frc.robot.commands.ExtruderinatorManualControl;
-import frc.robot.commands.ShoulderControl;
 import frc.robot.commands.ShoulderManualControl;
 import frc.robot.commands.YikesWeSmushedIt;
 import frc.robot.subsystems.Claw;
@@ -29,9 +25,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -45,32 +44,23 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(Constants.Control.driverControllerPort);
-  
-  private final CommandXboxController m_operatorController =
-      new CommandXboxController(Constants.Control.operatorControllerPort);
+  private final CommandXboxController m_driverController = new CommandXboxController(
+      Constants.Control.driverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final CommandXboxController m_operatorController = new CommandXboxController(
+      Constants.Control.operatorControllerPort);
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     System.out.println("We're live folks");
 
     // Configure the trigger bindings
     configureBindings();
 
-    m_drivetrain.setDefaultCommand(new DriveArcade(
-      m_drivetrain,
-      () -> -m_driverController.getRawAxis(Constants.Control.moveAxis),
-      () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)
-    ));
-
-    m_claw.setDefaultCommand(new ClawManualControl(
-      m_claw,
-      () -> -m_driverController.getRawAxis(Constants.Control.clawAxis)
-    ));
-
-    CameraServer.startAutomaticCapture();
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture(); // Cam 0
+    // CameraServer.startAutomaticCapture(); // Cam 1
   }
 
   private void configureBindings() {
@@ -81,25 +71,53 @@ public class RobotContainer {
      * should not be used unless a sensor fails, something gets misaligned, etc.
      */
 
+    m_drivetrain.setDefaultCommand(new DriveArcade(
+        m_drivetrain,
+        () -> -m_driverController.getRawAxis(Constants.Control.moveAxis),
+        () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)));
+
+
     /* - Claw - */
-    m_driverController.x().onTrue(new ClawControl(m_claw, Constants.Claw.closeClawSetPoint)); // X - Close
-    m_driverController.a().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));  // A - Open
+    m_driverController.leftTrigger()
+        .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Left Trigger - Open
+    m_driverController.rightTrigger()
+        .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualCloseSpeed)); // Right Trigger - Close
+
 
     /* - Shoulder - */
-    m_driverController.y().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint));   // Y - Shoulder UP!!!
-    m_driverController.b().onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.downShoulderSetPoint)); // B - Shoulder DOWN!!!
+    // m_driverController.y().onTrue(new ShoulderControl(m_shoulder,
+    // Constants.Shoulder.upShoulderSetPoint)); // Y -
+    // // Shoulder
+    // // UP!!!
+    // m_driverController.b().onTrue(new ShoulderControl(m_shoulder,
+    // Constants.Shoulder.downShoulderSetPoint)); // B -
+    // // Shoulder
+    // // DOWN!!!
+    m_shoulder.setDefaultCommand(new ShoulderManualControl(
+        m_shoulder,
+        () -> m_operatorController.getRawAxis(Constants.Control.shoulderAxis)));
+
 
     /* - Extruderinator - */
     // Reset on limit switch
     final Trigger m_extruderinatorLimitSwitchTrigger = new Trigger(m_extruderinator::isSmushed);
     m_extruderinatorLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_extruderinator));
 
-    m_driverController.leftTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.inExtruderSetPoint));   // Left Trigger - Schwooop in
-    m_driverController.rightTrigger().onTrue(new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)); // Right Trigger  - Khzzzzz out
+    // m_extruderinator.setDefaultCommand(new ExtruderinatorManualControl(
+    //     m_extruderinator,
+    //     () -> m_operatorController.getRawAxis(Constants.Control.extruderinatorAxis)));
+
+    m_driverController.povUp().onTrue(new ExtruderinatorManualControl(
+        m_extruderinator,
+        () -> Constants.Extruderinator.manualUpSpeed));
+
+    m_driverController.povDown().onTrue(new ExtruderinatorManualControl(
+        m_extruderinator,
+        () -> Constants.Extruderinator.manualDownSpeed));
 
     /* - Eternal Balance */
-
-    m_driverController.povUp().onTrue(new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
+    // m_driverController.povUp().onTrue(new EternalBalanceToggle(() ->
+    // m_gyro.getPitch(), m_drivetrain));
   }
 
   /**

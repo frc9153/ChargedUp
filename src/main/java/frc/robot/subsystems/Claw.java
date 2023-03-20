@@ -47,7 +47,7 @@ public class Claw extends SubsystemBase {
 
   public void setSpeed(double speed) {
     // TODO: Wrong controlmode for the job?
-    m_clawMotor.set(ControlMode.Velocity, speed);
+    m_clawMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public boolean isAtSetPoint() {

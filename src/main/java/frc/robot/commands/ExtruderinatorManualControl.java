@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Extruderinator;
 
 public class ExtruderinatorManualControl extends CommandBase {
@@ -26,7 +27,7 @@ public class ExtruderinatorManualControl extends CommandBase {
 
   @Override
   public void execute() {
-    double value = m_rotate.getAsDouble() / 10.0;
+    double value = m_rotate.getAsDouble() * Constants.Extruderinator.manualControlMultiplier;
 
     m_extruderinator.setSpeed(value);
     SmartDashboard.putNumber("Extruderinator Axis Rot", value);

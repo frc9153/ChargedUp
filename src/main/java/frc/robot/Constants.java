@@ -7,13 +7,13 @@ package frc.robot;
 public final class Constants {
   public static class Control {
     public static final int driverControllerPort = 0;
-    public static final int operatorControllerPort = 0;
+    public static final int operatorControllerPort = 1;
 
     public static final int moveAxis = 1;
     public static final int rotateAxis = 0;
-    public static final int shoulderAxis = -1;
-    public static final int extruderinatorAxis = -1;
-    public static final int clawAxis = 5;
+    public static final int shoulderAxis = 5;
+    public static final int extruderinatorAxis = 1;
+    // public static final int clawAxis = 5;
   }
 
   public static class Drivetrain {
@@ -32,13 +32,17 @@ public final class Constants {
     public static final double clawIZone = 0.0;
     public static final double clawFF = 0.0;
 
-    public static final double minClawSpeed = -1.0;
-    public static final double maxClawSpeed = 1.0;
+    public static final double minClawSpeed = -2.0;
+    public static final double maxClawSpeed = 2.0;
 
     public static final double closeClawSetPoint = 1.0; // TODO: Dummy value
     public static final double openClawSetPoint = 0.0; // TODO: Dummy value
 
     public static final double clawPIDEpsilon = 0.001;
+
+    public static final double manualCloseSpeed = -1;
+
+    public static final double manualOpenSpeed = 1;
   }
 
   public static class Shoulder {
@@ -80,6 +84,11 @@ public final class Constants {
     public static final double outExtruderSetPoint = 0.3; // TODO: Dummy value
 
     public static final double extruderPIDEpsilon = 0.001;
+
+    public static final double manualControlMultiplier = 0.1;
+
+    public static final double manualUpSpeed = 1;
+    public static final double manualDownSpeed = -1;
   }
 
   public static class EternalBalance {

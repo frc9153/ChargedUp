@@ -26,7 +26,7 @@ public class ClawManualControl extends CommandBase {
 
   @Override
   public void execute() {
-    double value = m_extend.getAsDouble() / 2.0;
+    double value = m_extend.getAsDouble();
 
     m_claw.setSpeed(value);
     SmartDashboard.putNumber("Claw Axis Rot", value);
