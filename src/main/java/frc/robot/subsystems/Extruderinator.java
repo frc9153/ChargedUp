@@ -69,7 +69,7 @@ public class Extruderinator extends SubsystemBase {
   }
 
   public void setOrigin() {
-    //m_extruderEncoder.setPosition(0.0);
+    m_extruderEncoder.setPosition(0.0);
   }
 
   public boolean isSmushed() {
