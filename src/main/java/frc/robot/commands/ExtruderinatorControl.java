@@ -20,6 +20,7 @@ public class ExtruderinatorControl extends CommandBase {
 
   @Override
   public void initialize() {
+    System.out.println("ARRRRRRRRRRRRRRGH");
     m_extruderinator.setSetPoint(m_targetPosition);
   }
 
@@ -27,7 +28,9 @@ public class ExtruderinatorControl extends CommandBase {
   public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_extruderinator.setSetPoint(m_extruderinator.getEncoder());
+  }
 
   @Override
   public boolean isFinished() {

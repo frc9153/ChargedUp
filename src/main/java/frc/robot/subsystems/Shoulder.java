@@ -61,6 +61,10 @@ public class Shoulder extends SubsystemBase {
   public boolean isAtSetPoint() {
     return Math.abs(m_setPoint - m_encoder.getPosition()) <= Constants.Shoulder.shoulderPIDEpsilon;
   }
+  
+  public double getEncoder() {
+    return m_encoder.getPosition();
+  }
 
   @Override
   public void periodic() {

@@ -20,7 +20,6 @@ public class ShoulderControl extends CommandBase {
 
   @Override
   public void initialize() {
-    System.out.println("ARRRRRRRRRRRRRRGH");
     m_shoulder.setSetPoint(m_targetPosition);
   }
 

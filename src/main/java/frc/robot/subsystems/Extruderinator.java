@@ -33,6 +33,7 @@ public class Extruderinator extends SubsystemBase {
      * - The limit switch is `kNormallyOpen`
      */
     m_extruderMotor = new CANSparkMax(Constants.Extruderinator.extruderMotorID, MotorType.kBrushless);
+    m_extruderMotor.setInverted(true);
 
     m_extruderEncoder = m_extruderMotor.getEncoder();
 
@@ -78,6 +79,10 @@ public class Extruderinator extends SubsystemBase {
 
   public boolean isAtSetPoint() {
     return Math.abs(m_setPoint - m_extruderEncoder.getPosition()) <= Constants.Extruderinator.extruderPIDEpsilon;
+  }
+
+  public double getEncoder() {
+    return m_extruderEncoder.getPosition();
   }
 
   @Override

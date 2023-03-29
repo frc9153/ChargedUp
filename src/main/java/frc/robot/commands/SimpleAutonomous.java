@@ -6,11 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Extruderinator;
+import frc.robot.subsystems.Shoulder;
 
-public class YikesWeSmushedIt extends CommandBase {
+public class SimpleAutonomous extends CommandBase {
   private Extruderinator m_extruderinator;
+  private Shoulder m_shoulder;
   // Detect limit switch smushing and set zero position
-  public YikesWeSmushedIt(Extruderinator extruderinator) {
+  public SimpleAutonomous(Extruderinator extruderinator) {
     m_extruderinator = extruderinator;
   }
 
