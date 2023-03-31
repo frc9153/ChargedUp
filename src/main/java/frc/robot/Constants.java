@@ -19,16 +19,18 @@ public final class Constants {
     public static final int clawOpenButton = 4;*/
     public static final int clawManualOpenButton = 2;
     public static final int clawManualCloseButton = 3;
-    public static final int extruderOutButton = 4;
+    public static final int extruderStoreButton = 2;
     public static final int extruderInButton = 1;
+    public static final int extruderHalfButton = 3;
+    public static final int extruderOutButton = 4;
   }
 
   public static class Autonomous {
-    public static final double sleepingSpeedForward = 0.3;
+    public static final double sleepingSpeedForward = 1;
     public static final double sleepingRotation = 0;
     public static final double sleepingDuration = 5.0;
     public static final double sleepingExtruderDelay = 1.0;
-    public static final double sleepingExtruder = 2.0;
+    public static final double sleepingExtruder = 1.0;
   }
 
   public static class Drivetrain {
@@ -47,8 +49,8 @@ public final class Constants {
     public static final double clawIZone = 0.0;
     public static final double clawFF = 0.0;
 
-    public static final double minClawSpeed = -2.0;
-    public static final double maxClawSpeed = 2.0;
+    public static final double minClawSpeed = -3.0;
+    public static final double maxClawSpeed = 3.0;
 
     public static final double coneClawSetPoint = 0.0; // TODO: Dummy value
     public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
@@ -83,10 +85,10 @@ public final class Constants {
     public static final double minShoulderSpeed = -0.1;
     public static final double maxShoulderSpeed = 0.1;
 
-    public static final double storeShoulderSetPoint = 0.28; // TODO: Dummy value
-    public static final double floorShoulderSetPoint = 0.3; // TODO: Dummy value
-    public static final double halfShoulderSetPoint = 0.45; // TODO: Dummy value
-    public static final double upShoulderSetPoint = 0.5; // TODO: Dummy value
+    public static final double storeShoulderSetPoint = 0.28;
+    public static final double floorShoulderSetPoint = 0.34;
+    public static final double halfShoulderSetPoint = 0.5;
+    public static final double upShoulderSetPoint = 0.54;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }
@@ -103,8 +105,10 @@ public final class Constants {
     public static final double minExtruderSpeed = -0.2;
     public static final double maxExtruderSpeed = 0.2;
 
-    public static final double inExtruderSetPoint = 0.0; // TODO: Dummy value
-    public static final double outExtruderSetPoint = 0.3; // TODO: Dummy value
+    public static final double storeExtruderSetPoint = 0.0;
+    public static final double inExtruderSetPoint = 5.0;
+    public static final double halfExtruderSetPoint = 26;
+    public static final double outExtruderSetPoint = 50;
 
     public static final double extruderPIDEpsilon = 0.01;
 
@@ -114,14 +118,19 @@ public final class Constants {
     public static final double manualStopSpeed = 0;
     public static final double manualOutSpeed = 1;
     public static final double autonomousSpeed = 0.5;
-    
-    public static final double inLocation = 10;
-    public static final double outLocation = 40;
   }
 
   public static class EternalBalance {
     // How much we gotta tip before we realize and run the other way
     public static final double balanceAngleThreshold = 0.1;
-    public static final double balanceCompensation = 0.1;
+
+    // Multiplier for normalized [-1, 1] direction to convert to speed
+    // public static final double balanceCompensation = 0.1;
+
+    // Applied to angle^pow to get power
+    public static final double balancePow = 0.8;
+
+    public static final double balanceClampMin = -0.5;
+    public static final double balanceClampMax = 0.5;
   }
 }

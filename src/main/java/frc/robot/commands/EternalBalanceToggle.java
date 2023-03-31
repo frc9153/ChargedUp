@@ -38,11 +38,17 @@ public class EternalBalanceToggle extends CommandBase {
       return;
     }
 
-    final int sign = angle > 0 ? 1 : -1;
+    // Assuming 0.5 rot is 90 degrees
+    double power = Math.pow(angle, Constants.EternalBalance.balancePow);
+
+    // Clamp power to [-0.5, 0.5]
+    power = Math.max(-0.5, Math.min(0.5, power));
+
+    //final int sign = angle > 0 ? 1 : -1;
 
     m_drivetrain.arcadeDrive(
       // Forward if angle is positive, backward if angle is negative
-      Constants.EternalBalance.balanceCompensation * sign,
+      power,
       0.0
     );
   }
