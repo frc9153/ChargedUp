@@ -28,7 +28,7 @@ public final class Constants {
   }
 
   public static class Autonomous {
-    public static final double sleepingSpeedForward = 0.4;
+    public static final double sleepingSpeedForward = 0.35;
     public static final double sleepingRotation = 0;
     public static final double sleepingDuration = 5.0;
     public static final double sleepingExtruderDelay = 1.0;
@@ -62,9 +62,9 @@ public final class Constants {
 
     public static final double clawPIDEpsilon = 0.001;
 
-    public static final double manualCloseSpeed = -1;
+    public static final double manualCloseSpeed = 1;
     public static final double manualStopSpeed = 0;
-    public static final double manualOpenSpeed = 1;
+    public static final double manualOpenSpeed = -1;
 
     public static final double clawTime = 1.5;
   }
@@ -93,7 +93,7 @@ public final class Constants {
     public static final double storeShoulderSetPoint = 0.28;
     public static final double floorShoulderSetPoint = 0.34;
     public static final double halfShoulderSetPoint = 0.5;
-    public static final double upShoulderSetPoint = 0.54;
+    public static final double upShoulderSetPoint = 0.52;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }

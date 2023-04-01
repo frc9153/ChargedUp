@@ -48,26 +48,21 @@ public class RobotContainer {
         public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
         public final Command asleepCommand = Commands.sequence(
                         new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint),
-                        new DriveArcade(
-                        m_drivetrain,
-                        () -> Constants.Autonomous.sleepingSpeedForward,
-                        () -> Constants.Autonomous.sleepingRotation)
-                        .withTimeout(Constants.Autonomous.sleepingDuration/2),
-                        new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed).withTimeout(1),
-                        new DriveArcade(
-                                        m_drivetrain,
-                                        () -> Constants.Autonomous.sleepingSpeedForward,
-                                        () -> Constants.Autonomous.sleepingRotation)
-                                        .withTimeout(Constants.Autonomous.sleepingDuration),
+                        Commands.parallel(new ExtruderinatorControl(m_extruderinator,
+                                        Constants.Extruderinator.outExtruderSetPoint),
+                                        new DriveArcade(
+                                                        m_drivetrain,
+                                                        () -> Constants.Autonomous.sleepingSpeedForward,
+                                                        () -> Constants.Autonomous.sleepingRotation)
+                                                        .withTimeout(Constants.Autonomous.sleepingDuration / 2)),
+                        new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed).withTimeout(2),
                         Commands.parallel(new DriveArcade(
                                         m_drivetrain,
                                         () -> -Constants.Autonomous.sleepingSpeedForward,
                                         () -> -Constants.Autonomous.sleepingRotation)
-                                        .withTimeout(Constants.Autonomous.sleepingDuration*2)
-                        // new ExtruderinatorControl(m_extruderinator,
-                        // Constants.Extruderinator.storeExtruderSetPoint)));
-                        ));
+                                        .withTimeout(Constants.Autonomous.sleepingDuration * 1.5),
+                                        new ExtruderinatorControl(m_extruderinator,
+                                                        Constants.Extruderinator.storeExtruderSetPoint)));
         /*
          * public final Command asleepCommand = Commands.sequence(
          * Commands.parallel(new ExtruderinatorManualControl(m_extruderinator, () ->
@@ -134,13 +129,13 @@ public class RobotContainer {
 
                 /* - Claw - */
                 m_operatorController.button(Constants.Control.clawManualOpenButton)
-                                .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Button
-                                                                                                              // X -
-                                                                                                              // Open
-                m_operatorController.button(Constants.Control.clawManualCloseButton)
                                 .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualCloseSpeed)); // Button
-                                                                                                               // B -
-                                                                                                               // Close
+                                                                                                               // X -
+                                                                                                               // Open
+                m_operatorController.button(Constants.Control.clawManualCloseButton)
+                                .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Button
+                                                                                                              // B -
+                                                                                                              // Close
 
                 m_operatorController.button(Constants.Control.clawManualOpenButton)
                                 .onFalse(new ClawManualControl(m_claw, () -> Constants.Claw.manualStopSpeed)); // Button
