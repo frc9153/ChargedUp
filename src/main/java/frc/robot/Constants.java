@@ -31,8 +31,8 @@ public final class Constants {
     public static final double sleepingSpeedForward = 0.35;
     public static final double sleepingRotation = 0;
     public static final double sleepingDuration = 5.0;
-    public static final double sleepingExtruderDelay = 1.0;
-    public static final double sleepingExtruder = 1.0;
+    public static final double sleepingDurationBalance = 3.0;
+    public static final double sleepingSpeedBalance = 0.5;
   }
 
   public static class Drivetrain {
@@ -41,7 +41,7 @@ public final class Constants {
     public static final int rightFrontMotorID = 4;
     public static final int rightBackMotorID = 1;
 
-    public static final double manualControlMultiplier = 0.7;
+    public static final double manualControlMultiplier = 1;//0.7
   }
 
   public static class Claw {
@@ -87,13 +87,13 @@ public final class Constants {
 
     public static final double shoulderBrakeFactor = 0.17;
 
-    public static final double minShoulderSpeed = -0.1;
-    public static final double maxShoulderSpeed = 0.1;
+    public static final double minShoulderSpeed = -0.3;
+    public static final double maxShoulderSpeed = 0.3;
 
     public static final double storeShoulderSetPoint = 0.28;
-    public static final double floorShoulderSetPoint = 0.34;
+    public static final double floorShoulderSetPoint = 0.305;
     public static final double halfShoulderSetPoint = 0.5;
-    public static final double upShoulderSetPoint = 0.52;
+    public static final double upShoulderSetPoint = 0.56;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }
@@ -105,19 +105,20 @@ public final class Constants {
     public static final double extruderI = 0.0;
     public static final double extruderD = 0.0;
     public static final double extruderIZone = 0.0;
+    
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -0.2;
-    public static final double maxExtruderSpeed = 0.2;
+    public static final double minExtruderSpeed = -0.5;
+    public static final double maxExtruderSpeed = 0.5;
 
     public static final double storeExtruderSetPoint = 0.0;
-    public static final double inExtruderSetPoint = 39.0;
-    public static final double halfExtruderSetPoint = 26;
+    public static final double inExtruderSetPoint = 13.0;
+    public static final double halfExtruderSetPoint = 18;
     public static final double outExtruderSetPoint = 50;
 
     public static final double extruderPIDEpsilon = 0.01;
 
-    public static final double manualControlMultiplier = 0.1;
+    public static final double manualControlMultiplier = 0.2;
 
     public static final double manualInSpeed = -1;
     public static final double manualStopSpeed = 0;
