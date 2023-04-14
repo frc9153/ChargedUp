@@ -33,11 +33,12 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    chooser.setDefaultOption("Score and Mobility", m_robotContainer.getAutonomousCommandMobility());
-    chooser.addOption("Score and Stay", m_robotContainer.getAutonomousCommandStay());
-    chooser.addOption("Score and Balance", m_robotContainer.getAutonomousCommandBalance());
+    chooser.setDefaultOption("Score and Mobility", m_robotContainer.scoreAndMobility);
+    chooser.addOption("Score and Stay", m_robotContainer.scoreAndSit);
+    chooser.addOption("Score and Balance", m_robotContainer.scoreAndBalance);
 
     SmartDashboard.putData("Autonomous Routine", chooser);
+    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
   /**

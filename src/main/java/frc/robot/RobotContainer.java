@@ -22,11 +22,9 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -237,25 +235,5 @@ public class RobotContainer {
                 /* - Eternal Balance */
                 // m_driverController.povUp().onTrue(new EternalBalanceToggle(() ->
                 // m_gyro.getPitch(), m_drivetrain));
-
-
-        }
-
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        public Command getAutonomousCommandMobility() {
-                System.out.println("RoboDoom sleeps and approaches...");
-                return scoreAndMobility;
-        }
-        public Command getAutonomousCommandStay() {
-                System.out.println("RoboDoom sleeps and stares...");
-                return scoreAndSit;
-        }
-        public Command getAutonomousCommandBalance() {
-                System.out.println("RoboDoom sleeps and balances...");
-                return scoreAndBalance;
         }
 }
