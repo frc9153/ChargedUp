@@ -45,7 +45,7 @@ public final class Constants {
   }
 
   public static class Claw {
-    public static final int clawMotorID = 7;
+    public static final int clawMotorID = 8;
 
     public static final double clawP = 10.0;
     public static final double clawI = 0.0;
@@ -53,8 +53,8 @@ public final class Constants {
     public static final double clawIZone = 0.0;
     public static final double clawFF = 0.0;
 
-    public static final double minClawSpeed = -3.0;
-    public static final double maxClawSpeed = 3.0;
+    public static final double minClawSpeed = -1.0;
+    public static final double maxClawSpeed = 1.0;
 
     public static final double coneClawSetPoint = 0.0; // TODO: Dummy value
     public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
