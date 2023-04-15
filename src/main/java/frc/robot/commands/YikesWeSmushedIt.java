@@ -5,18 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Extruderinator;
+import frc.robot.subsystems.Smushable;
 
 public class YikesWeSmushedIt extends CommandBase {
-  private Extruderinator m_extruderinator;
+  private Smushable m_smushable;
   // Detect limit switch smushing and set zero position
-  public YikesWeSmushedIt(Extruderinator extruderinator) {
-    m_extruderinator = extruderinator;
+  public YikesWeSmushedIt(Smushable smushable) {
+    m_smushable = smushable;
   }
 
   @Override
   public void initialize() {
-    m_extruderinator.setOrigin();
+    m_smushable.setOrigin();
   }
 
   @Override

@@ -127,12 +127,6 @@ public class RobotContainer {
                                                 * Constants.Drivetrain.manualControlMultiplier,
                                 () -> Math.pow(-m_driverController.getRawAxis(Constants.Control.rotateAxis), 3.0)
                                                 * Constants.Drivetrain.manualControlMultiplier));
-                /* - Polarity Swap - */
-                // m_driverController.rightBumper().onTrue(new InstantCommand(() ->
-                // m_drivePolarity = 1));
-                // m_driverController.leftBumper().onTrue(new InstantCommand(() ->
-                // m_drivePolarity = -1));
-
                 /* - Claw - */
                 m_operatorController.rightTrigger()
                                 .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Right
@@ -152,49 +146,21 @@ public class RobotContainer {
                                                                                                                //  -
                                                                                                                // Open
 
-                /*
-                 * m_driverController.button(Constants.Control.clawConeButton)
-                 * .onTrue(new ClawControl(m_claw, Constants.Claw.coneClawSetPoint));
-                 * m_driverController.button(Constants.Control.clawCubeButton)
-                 * .onTrue(new ClawControl(m_claw, Constants.Claw.cubeClawSetPoint));
-                 * m_driverController.button(Constants.Control.clawOpenButton)
-                 * .onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));
-                 */
                 /* - Shoulder - */
-                // m_driverController.y().onTrue(new ShoulderControl(m_shoulder,
-                // Constants.Shoulder.upShoulderSetPoint)); // Y -
-                // // Shoulder
-                // // UP!!!
-                // m_driverController.b().onTrue(new ShoulderControl(m_shoulder,
-                // Constants.Shoulder.downShoulderSetPoint)); // B -
-                // // Shoulder
-                // // DOWN!!!
-
-                //0.30, 0.50
                 m_shoulder.setDefaultCommand(new ShoulderManualControl( 
                                 m_shoulder,
                                 () -> -m_operatorController.getRawAxis(Constants.Control.shoulderAxis)
                                                 + 0.25 + (0.2 * (m_extruderinator.getEncoder() / 40))));
                 // + Constants.Shoulder.shoulderBrakeFactor));
 
-                /*m_operatorController.povUp()
-                                .onTrue();
-                m_operatorController.povDown()
-                                .onTrue();
-                m_operatorController.povRight()
-                                .onTrue();
-                m_operatorController.povLeft()
-                                .onTrue();*/
-
                 /* - Extruderinator - */
                 // Reset on limit switch
                 final Trigger m_extruderinatorLimitSwitchTrigger = new Trigger(m_extruderinator::isSmushed);
                 m_extruderinatorLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_extruderinator));
 
-                // m_extruderinator.setDefaultCommand(new ExtruderinatorManualControl(
-                // m_extruderinator,
-                // () ->
-                // m_operatorController.getRawAxis(Constants.Control.extruderinatorAxis)));
+                // Claw reset on limit switch
+                final Trigger m_clawLimitSwitchTrigger = new Trigger(m_claw::isSmushed);
+                m_clawLimitSwitchTrigger.onTrue(new YikesWeSmushedIt(m_claw));
 
                 /// BEGIN
 

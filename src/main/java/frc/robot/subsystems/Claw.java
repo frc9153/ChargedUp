@@ -6,50 +6,55 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Claw extends SubsystemBase {
-  private CANSparkMax m_clawMotor;
-  private SparkMaxPIDController m_clawPIDController;
+public class Claw extends Smushable {
+  private CANSparkMax m_motor;
+  private SparkMaxPIDController m_PIDController;
+  private SparkMaxLimitSwitch m_limitSwitch;
   private RelativeEncoder m_encoder;
   
   // Glorious hack because we can't read setpoint from motor controller
   private double m_setPoint;
 
   public Claw() {
-    m_clawMotor = new CANSparkMax(Constants.Claw.clawMotorID, MotorType.kBrushless);
-    m_encoder = m_clawMotor.getEncoder();
+    m_motor = new CANSparkMax(Constants.Claw.clawMotorID, MotorType.kBrushless);
+    m_encoder = m_motor.getEncoder();
 
-    m_clawPIDController = m_clawMotor.getPIDController();
+    m_limitSwitch = m_motor.getReverseLimitSwitch(Type.kNormallyOpen);
+    m_limitSwitch.enableLimitSwitch(true);
+
+    m_PIDController = m_motor.getPIDController();
 
     // PID Config setup
-    m_clawPIDController.setP(Constants.Claw.clawP);
-    m_clawPIDController.setI(Constants.Claw.clawI);
-    m_clawPIDController.setD(Constants.Claw.clawD);
-    m_clawPIDController.setIZone(Constants.Claw.clawIZone);
-    m_clawPIDController.setFF(Constants.Claw.clawFF);
-    m_clawPIDController.setOutputRange(Constants.Claw.minClawSpeed, Constants.Claw.maxClawSpeed);
+    m_PIDController.setP(Constants.Claw.clawP);
+    m_PIDController.setI(Constants.Claw.clawI);
+    m_PIDController.setD(Constants.Claw.clawD);
+    m_PIDController.setIZone(Constants.Claw.clawIZone);
+    m_PIDController.setFF(Constants.Claw.clawFF);
+    m_PIDController.setOutputRange(Constants.Claw.minClawSpeed, Constants.Claw.maxClawSpeed);
     //m_clawPIDController.setFeedbackDevice(m_encoder);
 
-    m_clawMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     // Make config survive reboot (learn from others' mistakes!)
-    m_clawMotor.burnFlash();
+    m_motor.burnFlash();
   }
 
   public void setSetPoint(double setPoint) {
     m_setPoint = setPoint;
-    m_clawPIDController.setReference(setPoint, ControlType.kPosition);
+    m_PIDController.setReference(setPoint, ControlType.kPosition);
   }
 
   public void setSpeed(double speed) {
-    m_clawMotor.set(speed);
+    m_motor.set(speed);
   }
 
   public boolean isAtSetPoint() {
@@ -57,7 +62,18 @@ public class Claw extends SubsystemBase {
   }
 
   @Override
+  public boolean isSmushed() {
+    return m_limitSwitch.isPressed();
+  }
+
+  @Override
+  public void setOrigin() {
+    m_encoder.setPosition(0.0);
+  }
+
+  @Override
   public void periodic() {
     SmartDashboard.putNumber("Claw Winch Position", m_encoder.getPosition());
+    SmartDashboard.putBoolean("Claw Limit Switch", m_limitSwitch.isPressed());
   }
 }

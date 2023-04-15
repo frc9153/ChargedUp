@@ -13,10 +13,9 @@ import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Extruderinator extends SubsystemBase {
+public class Extruderinator extends Smushable {
   private CANSparkMax m_extruderMotor;
   private SparkMaxPIDController m_extruderPIDController;
   private SparkMaxLimitSwitch m_extruderLimitSwitch;
@@ -37,7 +36,6 @@ public class Extruderinator extends SubsystemBase {
 
     m_extruderEncoder = m_extruderMotor.getEncoder();
 
-    // TODO: No clue what the type is. Replace it when found!
     m_extruderLimitSwitch = m_extruderMotor.getReverseLimitSwitch(Type.kNormallyOpen);
     m_extruderLimitSwitch.enableLimitSwitch(true);
 
@@ -69,20 +67,22 @@ public class Extruderinator extends SubsystemBase {
     m_extruderMotor.set(speed);
   }
 
-  public void setOrigin() {
-    m_extruderEncoder.setPosition(0.0);
-  }
-
-  public boolean isSmushed() {
-    return m_extruderLimitSwitch.isPressed();
-  }
-
   public boolean isAtSetPoint() {
     return Math.abs(m_setPoint - m_extruderEncoder.getPosition()) <= Constants.Extruderinator.extruderPIDEpsilon;
   }
 
   public double getEncoder() {
     return m_extruderEncoder.getPosition();
+  }
+
+  @Override
+  public void setOrigin() {
+    m_extruderEncoder.setPosition(0.0);
+  }
+
+  @Override
+  public boolean isSmushed() {
+    return m_extruderLimitSwitch.isPressed();
   }
 
   @Override
