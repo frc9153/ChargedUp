@@ -53,8 +53,8 @@ public final class Constants {
     public static final double clawIZone = 0.0;
     public static final double clawFF = 0.0;
 
-    public static final double minClawSpeed = -1.0;
-    public static final double maxClawSpeed = 1.0;
+    public static final double minClawSpeed = -0.2;
+    public static final double maxClawSpeed = 0.2;
 
     public static final double coneClawSetPoint = 0.0; // TODO: Dummy value
     public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
@@ -62,11 +62,14 @@ public final class Constants {
 
     public static final double clawPIDEpsilon = 0.001;
 
-    public static final double manualCloseSpeed = 1;
+    public static final double manualCloseSpeed = -1;
     public static final double manualStopSpeed = 0;
-    public static final double manualOpenSpeed = -1;
+    public static final double manualOpenSpeed = 1;
 
     public static final double clawTime = 1.5;
+
+    public static final double clawSmushedDeltaThreshold = 0.5;
+    public static final int clawSmushDeltaCountThreshold = 3;
   }
 
   public static class Shoulder {
@@ -93,7 +96,7 @@ public final class Constants {
     public static final double storeShoulderSetPoint = 0.28;
     public static final double floorShoulderSetPoint = 0.305;
     public static final double halfShoulderSetPoint = 0.5;
-    public static final double upShoulderSetPoint = 0.56;
+    public static final double upShoulderSetPoint = 0.58;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }
@@ -114,7 +117,7 @@ public final class Constants {
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;
     public static final double halfExtruderSetPoint = 18;
-    public static final double outExtruderSetPoint = 50;
+    public static final double outExtruderSetPoint = 64; // max 67
 
     public static final double extruderPIDEpsilon = 0.01;
 
@@ -129,12 +132,6 @@ public final class Constants {
   public static class EternalBalance {
     // How much we gotta tip before we realize and run the other way
     public static final double balanceAngleThreshold = 0.1;
-
-    // Multiplier for normalized [-1, 1] direction to convert to speed
-    // public static final double balanceCompensation = 0.1;
-
-    // Applied to angle^pow to get power
-    public static final double balancePow = 0.8;
 
     public static final double balanceClampMin = -0.5;
     public static final double balanceClampMax = 0.5;

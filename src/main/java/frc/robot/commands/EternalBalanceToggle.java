@@ -6,14 +6,13 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class EternalBalanceToggle extends CommandBase {
   private final DoubleSupplier m_angleSupplier;
   private final Drivetrain m_drivetrain;
-  private boolean m_active = false;
 
   public EternalBalanceToggle(DoubleSupplier angleSupplier, Drivetrain drivetrain) {
     m_angleSupplier = angleSupplier;
@@ -22,39 +21,40 @@ public class EternalBalanceToggle extends CommandBase {
 
   @Override
   public void initialize() {
-    m_active = !m_active;
+    SmartDashboard.putBoolean("Balance Enabled", true);
   }
 
   @Override
   public void execute() {
-    if (!m_active) {
-      return;
-    }
-
     final double angle = m_angleSupplier.getAsDouble();
 
     // Angle isn't substantial enough to move
-    if (Math.abs(angle) - Constants.EternalBalance.balanceAngleThreshold < 0) {
-      return;
-    }
+    // if (Math.abs(angle) - Constants.EternalBalance.balanceAngleThreshold < 0) {
+    // return;
+    // }
 
-    // Assuming 0.5 rot is 90 degrees
-    double power = Math.pow(angle, Constants.EternalBalance.balancePow);
+    SmartDashboard.putNumber("Balance Angle", angle);
+
+    // Preserve sign with abs of value
+    double power = angle / 12.0;
+    power *= Math.abs(power);
 
     // Clamp power to [-0.5, 0.5]
-    power = Math.max(-0.5, Math.min(0.5, power));
+    power = Math.max(-0.3, Math.min(0.3, power));
 
-    //final int sign = angle > 0 ? 1 : -1;
+    SmartDashboard.putNumber("Balance Power", power);
 
     m_drivetrain.arcadeDrive(
-      // Forward if angle is positive, backward if angle is negative
-      power,
-      0.0
-    );
+        // Forward if angle is positive, backward if angle is negative
+        power,
+        0.0);
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drivetrain.arcadeDrive(0, 0);
+    SmartDashboard.putBoolean("Balance Enabled", false);
+  }
 
   @Override
   public boolean isFinished() {

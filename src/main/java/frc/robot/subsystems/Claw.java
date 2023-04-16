@@ -6,30 +6,25 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Claw extends Smushable {
+public class Claw extends SubsystemBase {
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_PIDController;
-  private SparkMaxLimitSwitch m_limitSwitch;
   private RelativeEncoder m_encoder;
-  
+
   // Glorious hack because we can't read setpoint from motor controller
   private double m_setPoint;
 
   public Claw() {
     m_motor = new CANSparkMax(Constants.Claw.clawMotorID, MotorType.kBrushless);
     m_encoder = m_motor.getEncoder();
-
-    m_limitSwitch = m_motor.getReverseLimitSwitch(Type.kNormallyOpen);
-    m_limitSwitch.enableLimitSwitch(true);
 
     m_PIDController = m_motor.getPIDController();
 
@@ -61,19 +56,20 @@ public class Claw extends Smushable {
     return Math.abs(m_setPoint - m_encoder.getPosition()) <= Constants.Claw.clawPIDEpsilon;
   }
 
-  @Override
-  public boolean isSmushed() {
-    return m_limitSwitch.isPressed();
+  public double getPosition() {
+    return m_encoder.getPosition();
   }
 
-  @Override
   public void setOrigin() {
     m_encoder.setPosition(0.0);
+  }
+
+  public CANSparkMax getMotor() {
+    return m_motor;
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Claw Winch Position", m_encoder.getPosition());
-    SmartDashboard.putBoolean("Claw Limit Switch", m_limitSwitch.isPressed());
   }
 }

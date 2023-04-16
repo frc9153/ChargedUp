@@ -24,11 +24,12 @@ public class Extruderinator extends Smushable {
   private double m_setPoint;
 
   public Extruderinator() {
-    /* The Extruderinator is a bit of a mystery to me as of now.
+    /*
+     * The Extruderinator is a bit of a mystery to me as of now.
      * Here's what I'm writing this code under the presumption of:
      * - We're using Spark Maxes (Maxs? Maxs'?) as motor controllers
      * - We're directly connecting the limit switch to motor controllers,
-     *   and the `getReverseLimitSwitch` API works like I imagine it does
+     * and the `getReverseLimitSwitch` API works like I imagine it does
      * - The limit switch is `kNormallyOpen`
      */
     m_extruderMotor = new CANSparkMax(Constants.Extruderinator.extruderMotorID, MotorType.kBrushless);
@@ -48,12 +49,11 @@ public class Extruderinator extends Smushable {
     m_extruderPIDController.setIZone(Constants.Extruderinator.extruderIZone);
     m_extruderPIDController.setFF(Constants.Extruderinator.extruderFF);
     m_extruderPIDController.setOutputRange(
-      Constants.Extruderinator.minExtruderSpeed,
-      Constants.Extruderinator.maxExtruderSpeed
-    );
+        Constants.Extruderinator.minExtruderSpeed,
+        Constants.Extruderinator.maxExtruderSpeed);
 
     m_extruderMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    
+
     // Make config survive reboot (learn from others' mistakes!)
     m_extruderMotor.burnFlash();
   }
@@ -88,6 +88,6 @@ public class Extruderinator extends Smushable {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Extruderinator Encoder Position", m_extruderEncoder.getPosition());
-    SmartDashboard.putBoolean("Reverse Limit Switch", m_extruderLimitSwitch.isPressed());
+    SmartDashboard.putBoolean("Extruderinator Limit Switch", m_extruderLimitSwitch.isPressed());
   }
 }
