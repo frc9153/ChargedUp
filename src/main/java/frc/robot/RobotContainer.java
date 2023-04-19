@@ -91,7 +91,6 @@ public class RobotContainer {
          * Constants.Autonomous.sleepingExtruder))
          * );
          */
-        public final Command clawTestCommand = new SoftClawStopper(m_claw).withTimeout(1.0);
 
         /*
          * public final Command clawCloseCommand = Commands.parallel(
@@ -145,23 +144,26 @@ public class RobotContainer {
                                 () -> Math.pow(-m_driverController.getRawAxis(Constants.Control.rotateAxis), 3.0)
                                                 * Constants.Drivetrain.manualControlMultiplier));
                 /* - Claw - */
-                m_operatorController.rightTrigger()
+                m_operatorController.button(Constants.Control.clawManualOpenButton)
                                 .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualOpenSpeed)); // Right
                                                                                                               // -
-                                                                                                              // Close
-                m_operatorController.leftTrigger()
+                                                                                                              // Open
+                m_operatorController.button(Constants.Control.clawManualCloseButton)
                                 .onTrue(new ClawManualControl(m_claw, () -> Constants.Claw.manualCloseSpeed)); // Left
                                                                                                                // -
-                                                                                                               // Open
+                                                                                                               // Close
 
-                m_operatorController.rightTrigger()
+                m_operatorController.button(Constants.Control.clawManualOpenButton)
                                 .onFalse(new ClawManualControl(m_claw, () -> Constants.Claw.manualStopSpeed)); // Right
                                                                                                                // -
-                                                                                                               // Close
-                m_operatorController.leftTrigger()
+                                                                                                               // Open
+                m_operatorController.button(Constants.Control.clawManualCloseButton)
                                 .onFalse(new ClawManualControl(m_claw, () -> Constants.Claw.manualStopSpeed)); // Left
                                                                                                                // -
-                                                                                                               // Open
+                                                                                                               // Close
+
+                m_operatorController.rightTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));
+                m_operatorController.leftTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.coneClawSetPoint));
 
                 /* - Shoulder - */
                 m_shoulder.setDefaultCommand(new ShoulderManualControl(
@@ -207,27 +209,40 @@ public class RobotContainer {
                                 m_extruderinator,
                                 Constants.Extruderinator.storeExtruderSetPoint).withTimeout(1.0));// Button B --
                                                                                                   // Extruder Store
-                m_operatorController.button(Constants.Control.extruderInButton).onTrue(Commands.parallel(
-                                new ExtruderinatorControl(
-                                                m_extruderinator,
-                                                Constants.Extruderinator.inExtruderSetPoint),
-                                new ShoulderControl(m_shoulder, Constants.Shoulder.floorShoulderSetPoint))
-                                .withTimeout(1.5));// Button A -- Extruder In
-                m_operatorController.button(Constants.Control.extruderHalfButton).onTrue(Commands.parallel(
-                                new ExtruderinatorControl(
-                                                m_extruderinator,
-                                                Constants.Extruderinator.halfExtruderSetPoint),
-                                new ShoulderControl(m_shoulder, Constants.Shoulder.halfShoulderSetPoint))
-                                .withTimeout(1.0));// Button X -- Extruder Half
+                m_operatorController.button(Constants.Control.extruderInButton).onTrue(new ExtruderinatorControl(
+                                m_extruderinator,
+                                Constants.Extruderinator.inExtruderSetPoint).withTimeout(2.0));// Button A -- Extruder
+                                                                                               // In
+                m_operatorController.button(Constants.Control.extruderHalfButton).onTrue(new ExtruderinatorControl(
+                                m_extruderinator,
+                                Constants.Extruderinator.halfExtruderSetPoint).withTimeout(1.0));// Button X -- Extruder
+                                                                                                 // Half
                 m_operatorController.button(Constants.Control.extruderOutButton)
-                                .onTrue(Commands.parallel(
-                                                Commands.sequence(new WaitCommand(0.5), new ExtruderinatorControl(
-                                                                m_extruderinator,
-                                                                Constants.Extruderinator.outExtruderSetPoint)),
-                                                new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint))
-                                                .withTimeout(1.5));// Button Y -- Extruder Out
+                                .onTrue(new ExtruderinatorControl(
+                                                m_extruderinator,
+                                                Constants.Extruderinator.outExtruderSetPoint).withTimeout(2.0));// Button
+                                                                                                                // Y --
+                                                                                                                // Extruder
+                                                                                                                // Out
+
+                // m_operatorController.povRight()
+                // .onTrue(new ShoulderControl(m_shoulder,
+                // Constants.Shoulder.storeShoulderSetPoint)
+                // .withTimeout(1.0));
+                m_operatorController.povDown()
+                                .onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.floorShoulderSetPoint)
+                                                .withTimeout(1.5));
+                m_operatorController.povLeft()
+                                .onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.halfShoulderSetPoint)
+                                                .withTimeout(1.0));
+                m_operatorController.povUp()
+                                .onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint)
+                                                .withTimeout(2.0));
 
                 /* - Eternal Balance */
                 m_driverController.start().toggleOnTrue(new EternalBalanceToggle(() -> m_gyro.getRoll(), m_drivetrain));
+
+                /* - Calibrate Claw */
+                m_operatorController.start().onTrue(new SoftClawStopper(m_claw).withTimeout(1.0));
         }
 }

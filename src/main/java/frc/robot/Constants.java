@@ -19,8 +19,8 @@ public final class Constants {
      * public static final int clawCubeButton = 2;
      * public static final int clawOpenButton = 4;
      */
-    public static final int clawManualOpenButton = 2;
-    public static final int clawManualCloseButton = 3;
+    public static final int clawManualOpenButton = 6;
+    public static final int clawManualCloseButton = 5;
     public static final int extruderStoreButton = 2;
     public static final int extruderInButton = 1;
     public static final int extruderHalfButton = 3;
@@ -53,12 +53,12 @@ public final class Constants {
     public static final double clawIZone = 0.0;
     public static final double clawFF = 0.0;
 
-    public static final double minClawSpeed = -0.2;
-    public static final double maxClawSpeed = 0.2;
+    public static final double minClawSpeed = -1;
+    public static final double maxClawSpeed = 1;
 
     public static final double coneClawSetPoint = 0.0; // TODO: Dummy value
     public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
-    public static final double openClawSetPoint = -1.0; // TODO: Dummy value
+    public static final double openClawSetPoint = 5.0; // TODO: Dummy value
 
     public static final double clawPIDEpsilon = 0.001;
 
