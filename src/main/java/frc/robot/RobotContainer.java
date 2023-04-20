@@ -82,6 +82,7 @@ public class RobotContainer {
                                         .withTimeout(Constants.Autonomous.sleepingDurationBalance),
                         new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
 
+        public final Command doAbsolutelyNothing = Commands.none();
         /*
          * public final Command asleepCommand = Commands.sequence(
          * Commands.parallel(new ExtruderinatorManualControl(m_extruderinator, () ->
