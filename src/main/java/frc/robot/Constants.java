@@ -58,7 +58,7 @@ public final class Constants {
 
     public static final double coneClawSetPoint = 5.0;
     // public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
-    public static final double openClawSetPoint = 40.0;
+    public static final double openClawSetPoint = 60.0;
 
     public static final double clawPIDEpsilon = 0.5;
 
@@ -96,7 +96,7 @@ public final class Constants {
     public static final double storeShoulderSetPoint = 0.28;
     public static final double floorShoulderSetPoint = 0.305;
     public static final double halfShoulderSetPoint = 0.5;
-    public static final double upShoulderSetPoint = 0.52;
+    public static final double upShoulderSetPoint = 0.58;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }
@@ -111,17 +111,17 @@ public final class Constants {
     
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -0.65;
-    public static final double maxExtruderSpeed = 0.65;
+    public static final double minExtruderSpeed = -0.5;
+    public static final double maxExtruderSpeed = 0.5;
 
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;
     public static final double halfExtruderSetPoint = 18;
-    public static final double outExtruderSetPoint = 64; // max 67
+    public static final double outExtruderSetPoint = 66; // max 67
 
     public static final double extruderPIDEpsilon = 0.01;
 
-    public static final double manualControlMultiplier = 0.2;
+    public static final double manualControlMultiplier = 0.5;
 
     public static final double manualInSpeed = -1;
     public static final double manualStopSpeed = 0;

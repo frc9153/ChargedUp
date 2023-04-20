@@ -49,22 +49,35 @@ public class RobotContainer {
         public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
 
         public final Command score = Commands.sequence(
-                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
+                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
                         new ExtruderinatorControl(m_extruderinator,
-                                        Constants.Extruderinator.outExtruderSetPoint),
-                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                                        Constants.Extruderinator.outExtruderSetPoint).withTimeout(1.5),
+                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2.0),
                         new WaitCommand(2.0),
+                        new ShoulderControl(m_shoulder, Constants.Shoulder.halfShoulderSetPoint),
                         new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint));
 
         public final Command scoreAndMobility = Commands.sequence(
-                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
-                        new ExtruderinatorControl(m_extruderinator,
-                                        Constants.Extruderinator.outExtruderSetPoint),
-                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)
+                                        .withTimeout(1.5),
+                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2.0),
                         new WaitCommand(2.0),
+                        new ShoulderControl(m_shoulder, Constants.Shoulder.halfShoulderSetPoint),
                         new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
+                        new DriveArcade(
+                                        m_drivetrain,
+                                        () -> -Constants.Autonomous.sleepingSpeedForward,
+                                        () -> -Constants.Autonomous.sleepingRotation)
+                                        .withTimeout(Constants.Autonomous.sleepingDuration));
+
+        public final Command hybridMobility = Commands.sequence(
+                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
+                                        () -> -Constants.Autonomous.sleepingRotation)
+                                        .withTimeout(Constants.Autonomous.sleepingDuration / 4.0),
                         new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
                                         () -> -Constants.Autonomous.sleepingRotation)
                                         .withTimeout(Constants.Autonomous.sleepingDuration));
@@ -87,7 +100,8 @@ public class RobotContainer {
          * new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
          */
 
-        public final Command doAbsolutelyNothing = Commands.none();
+        public final Command doAbsolutelyNothing = new SoftClawStopper(m_claw).withTimeout(2.0);
+
         /*
          * public final Command asleepCommand = Commands.sequence(
          * Commands.parallel(new ExtruderinatorManualControl(m_extruderinator, () ->
@@ -142,9 +156,9 @@ public class RobotContainer {
 
                 m_drivetrain.setDefaultCommand(new DriveArcade(
                                 m_drivetrain,
-                                () -> Math.pow(-m_driverController.getRawAxis(Constants.Control.moveAxis), 3.0)
+                                () -> -m_driverController.getRawAxis(Constants.Control.moveAxis)
                                                 * Constants.Drivetrain.manualControlMultiplier,
-                                () -> Math.pow(-m_driverController.getRawAxis(Constants.Control.rotateAxis), 3.0)
+                                () -> -m_driverController.getRawAxis(Constants.Control.rotateAxis)
                                                 * Constants.Drivetrain.manualControlMultiplier));
                 /* - Claw - */
                 m_operatorController.button(Constants.Control.clawManualOpenButton)
@@ -247,6 +261,6 @@ public class RobotContainer {
                 // m_gyro.getRoll(), m_drivetrain));
 
                 /* - Calibrate Claw */
-                m_operatorController.start().onTrue(new SoftClawStopper(m_claw).withTimeout(1.0));
+                m_operatorController.start().onTrue(new SoftClawStopper(m_claw).withTimeout(3.0));
         }
 }

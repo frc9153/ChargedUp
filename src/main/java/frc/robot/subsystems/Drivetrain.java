@@ -10,29 +10,32 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Drivetrain extends SubsystemBase {
   MotorControllerGroup leftMotors = new MotorControllerGroup(
-    new CANSparkMax(Constants.Drivetrain.leftFrontMotorID, MotorType.kBrushless), // Left front
-    new CANSparkMax(Constants.Drivetrain.leftBackMotorID, MotorType.kBrushless) // Left back
+      new CANSparkMax(Constants.Drivetrain.leftFrontMotorID, MotorType.kBrushless), // Left front
+      new CANSparkMax(Constants.Drivetrain.leftBackMotorID, MotorType.kBrushless) // Left back
   );
-  
+
   MotorControllerGroup rightMotors = new MotorControllerGroup(
-    new CANSparkMax(Constants.Drivetrain.rightFrontMotorID, MotorType.kBrushless), // Right front
-    new CANSparkMax(Constants.Drivetrain.rightBackMotorID, MotorType.kBrushless) // Right back
+      new CANSparkMax(Constants.Drivetrain.rightFrontMotorID, MotorType.kBrushless), // Right front
+      new CANSparkMax(Constants.Drivetrain.rightBackMotorID, MotorType.kBrushless) // Right back
   );
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
-  
+  SlewRateLimiter moveLimiter = new SlewRateLimiter(1.8);
+  SlewRateLimiter rotateLimiter = new SlewRateLimiter(1.8);
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     rightMotors.setInverted(true);
   }
 
   public void arcadeDrive(double moveSpeed, double rotateSpeed) {
-    differentialDrive.arcadeDrive(moveSpeed, rotateSpeed);
+    differentialDrive.arcadeDrive(moveLimiter.calculate(moveSpeed), rotateLimiter.calculate(rotateSpeed));
   }
 
   @Override

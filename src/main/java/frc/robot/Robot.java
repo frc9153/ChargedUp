@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Score and Mobility", m_robotContainer.scoreAndMobility);
     chooser.addOption("Score and Stay", m_robotContainer.score);
     // chooser.addOption("Score and Balance", m_robotContainer.scoreAndBalance);
+    chooser.addOption("Hybrid Mobility", m_robotContainer.hybridMobility);
     chooser.addOption("Do Nothing At All", m_robotContainer.doAbsolutelyNothing);
     // chooser.addOption("Test Claw Calibration", m_robotContainer.clawTestCommand);
 
