@@ -69,18 +69,23 @@ public class RobotContainer {
                                         () -> -Constants.Autonomous.sleepingRotation)
                                         .withTimeout(Constants.Autonomous.sleepingDuration));
 
-        public final Command scoreAndBalance = Commands.sequence(
-                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
-                        new ExtruderinatorControl(m_extruderinator,
-                                        Constants.Extruderinator.outExtruderSetPoint),
-                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
-                        new WaitCommand(2.0),
-                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
-                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedBalance,
-                                        () -> -Constants.Autonomous.sleepingRotation)
-                                        .withTimeout(Constants.Autonomous.sleepingDurationBalance),
-                        new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
+        /*
+         * public final Command scoreAndBalance = Commands.sequence(
+         * Commands.parallel(new ShoulderControl(m_shoulder,
+         * Constants.Shoulder.upShoulderSetPoint),
+         * new SoftClawStopper(m_claw).withTimeout(1.0)),
+         * new ExtruderinatorControl(m_extruderinator,
+         * Constants.Extruderinator.outExtruderSetPoint),
+         * new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+         * new WaitCommand(2.0),
+         * new ExtruderinatorControl(m_extruderinator,
+         * Constants.Extruderinator.storeExtruderSetPoint),
+         * new DriveArcade(m_drivetrain, () ->
+         * -Constants.Autonomous.sleepingSpeedBalance,
+         * () -> -Constants.Autonomous.sleepingRotation)
+         * .withTimeout(Constants.Autonomous.sleepingDurationBalance),
+         * new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
+         */
 
         public final Command doAbsolutelyNothing = Commands.none();
         /*
