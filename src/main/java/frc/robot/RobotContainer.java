@@ -48,41 +48,38 @@ public class RobotContainer {
         public final Extruderinator m_extruderinator = new Extruderinator();
         public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
 
-        public final Command scoreAndMobility = Commands.sequence(
-                        new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+        public final Command score = Commands.sequence(
+                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
                         new ExtruderinatorControl(m_extruderinator,
                                         Constants.Extruderinator.outExtruderSetPoint),
-                        // new ClawManualControl(m_claw, () ->
-                        // Constants.Claw.manualOpenSpeed).withTimeout(2),
-                        Commands.parallel(
-                                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
-                                                        () -> -Constants.Autonomous.sleepingRotation)
-                                                        .withTimeout(Constants.Autonomous.sleepingDuration),
-                                        new ExtruderinatorControl(m_extruderinator,
-                                                        Constants.Extruderinator.storeExtruderSetPoint)));
+                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                        new WaitCommand(2.0),
+                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint));
 
-        public final Command scoreAndSit = Commands.sequence(
-                        new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+        public final Command scoreAndMobility = Commands.sequence(
+                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
                         new ExtruderinatorControl(m_extruderinator,
                                         Constants.Extruderinator.outExtruderSetPoint),
-                        // new ClawManualControl(m_claw, () ->
-                        // Constants.Claw.manualOpenSpeed).withTimeout(2)
-                        new ExtruderinatorControl(m_extruderinator,
-                                        Constants.Extruderinator.storeExtruderSetPoint));
+                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                        new WaitCommand(2.0),
+                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
+                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
+                                        () -> -Constants.Autonomous.sleepingRotation)
+                                        .withTimeout(Constants.Autonomous.sleepingDuration));
 
         public final Command scoreAndBalance = Commands.sequence(
-                        // new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                        // new ExtruderinatorControl(m_extruderinator,
-                        // Constants.Extruderinator.outExtruderSetPoint),
-                        // new ClawManualControl(m_claw, () ->
-                        // Constants.Claw.manualOpenSpeed).withTimeout(2),
-                        Commands.parallel(
-                                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedBalance,
-                                                        () -> -Constants.Autonomous.sleepingRotation)
-                                                        .withTimeout(Constants.Autonomous.sleepingDurationBalance)
-                        // new ExtruderinatorControl(m_extruderinator,
-                        // Constants.Extruderinator.storeExtruderSetPoint),
-                        ),
+                Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+                                new SoftClawStopper(m_claw).withTimeout(1.0)),
+                new ExtruderinatorControl(m_extruderinator,
+                                Constants.Extruderinator.outExtruderSetPoint),
+                                new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                                new WaitCommand(2.0),
+                new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
+                        new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedBalance,
+                                        () -> -Constants.Autonomous.sleepingRotation)
+                                        .withTimeout(Constants.Autonomous.sleepingDurationBalance),
                         new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
 
         /*
@@ -207,20 +204,20 @@ public class RobotContainer {
 
                 m_operatorController.button(Constants.Control.extruderStoreButton).onTrue(new ExtruderinatorControl(
                                 m_extruderinator,
-                                Constants.Extruderinator.storeExtruderSetPoint).withTimeout(1.0));// Button B --
+                                Constants.Extruderinator.storeExtruderSetPoint).withTimeout(1.5));// Button B --
                                                                                                   // Extruder Store
                 m_operatorController.button(Constants.Control.extruderInButton).onTrue(new ExtruderinatorControl(
                                 m_extruderinator,
-                                Constants.Extruderinator.inExtruderSetPoint).withTimeout(2.0));// Button A -- Extruder
+                                Constants.Extruderinator.inExtruderSetPoint).withTimeout(3.0));// Button A -- Extruder
                                                                                                // In
                 m_operatorController.button(Constants.Control.extruderHalfButton).onTrue(new ExtruderinatorControl(
                                 m_extruderinator,
-                                Constants.Extruderinator.halfExtruderSetPoint).withTimeout(1.0));// Button X -- Extruder
+                                Constants.Extruderinator.halfExtruderSetPoint).withTimeout(1.5));// Button X -- Extruder
                                                                                                  // Half
                 m_operatorController.button(Constants.Control.extruderOutButton)
                                 .onTrue(new ExtruderinatorControl(
                                                 m_extruderinator,
-                                                Constants.Extruderinator.outExtruderSetPoint).withTimeout(2.0));// Button
+                                                Constants.Extruderinator.outExtruderSetPoint).withTimeout(3.0));// Button
                                                                                                                 // Y --
                                                                                                                 // Extruder
                                                                                                                 // Out

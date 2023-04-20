@@ -29,7 +29,8 @@ public class ClawControl extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    // TODO: Should we be doing anything special here with the PID loop?
+    System.out.println("We're done.");
+    m_claw.setSetPoint(m_claw.getPosition());
   }
 
   @Override

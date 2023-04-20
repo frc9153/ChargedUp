@@ -47,20 +47,20 @@ public final class Constants {
   public static class Claw {
     public static final int clawMotorID = 8;
 
-    public static final double clawP = 10.0;
+    public static final double clawP = 3.0;
     public static final double clawI = 0.0;
     public static final double clawD = 0.0;
     public static final double clawIZone = 0.0;
-    public static final double clawFF = 0.0;
+    public static final double clawFF = 0.00;
 
     public static final double minClawSpeed = -1;
     public static final double maxClawSpeed = 1;
 
-    public static final double coneClawSetPoint = 0.0; // TODO: Dummy value
+    public static final double coneClawSetPoint = 10.0; // TODO: Dummy value
     public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
-    public static final double openClawSetPoint = 5.0; // TODO: Dummy value
+    public static final double openClawSetPoint = 40.0; // TODO: Dummy value
 
-    public static final double clawPIDEpsilon = 0.001;
+    public static final double clawPIDEpsilon = 0.5;
 
     public static final double manualCloseSpeed = -1;
     public static final double manualStopSpeed = 0;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final double clawTime = 1.5;
 
     public static final double clawSmushedDeltaThreshold = 0.5;
-    public static final int clawSmushDeltaCountThreshold = 3;
+    public static final int clawSmushDeltaCountThreshold = 10;
   }
 
   public static class Shoulder {
@@ -96,7 +96,7 @@ public final class Constants {
     public static final double storeShoulderSetPoint = 0.28;
     public static final double floorShoulderSetPoint = 0.305;
     public static final double halfShoulderSetPoint = 0.5;
-    public static final double upShoulderSetPoint = 0.58;
+    public static final double upShoulderSetPoint = 0.52;
 
     public static final double shoulderPIDEpsilon = 0.05;
   }
@@ -111,8 +111,8 @@ public final class Constants {
     
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -0.5;
-    public static final double maxExtruderSpeed = 0.5;
+    public static final double minExtruderSpeed = -0.65;
+    public static final double maxExtruderSpeed = 0.65;
 
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;

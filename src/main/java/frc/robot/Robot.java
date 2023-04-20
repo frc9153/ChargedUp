@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     chooser.setDefaultOption("Score and Mobility", m_robotContainer.scoreAndMobility);
-    chooser.addOption("Score and Stay", m_robotContainer.scoreAndSit);
+    chooser.addOption("Score and Stay", m_robotContainer.score);
     chooser.addOption("Score and Balance", m_robotContainer.scoreAndBalance);
     // chooser.addOption("Test Claw Calibration", m_robotContainer.clawTestCommand);
 

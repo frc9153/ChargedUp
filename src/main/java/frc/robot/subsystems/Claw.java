@@ -35,7 +35,6 @@ public class Claw extends SubsystemBase {
     m_PIDController.setIZone(Constants.Claw.clawIZone);
     m_PIDController.setFF(Constants.Claw.clawFF);
     m_PIDController.setOutputRange(Constants.Claw.minClawSpeed, Constants.Claw.maxClawSpeed);
-    //m_clawPIDController.setFeedbackDevice(m_encoder);
 
     m_motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
