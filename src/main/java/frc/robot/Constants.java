@@ -56,9 +56,9 @@ public final class Constants {
     public static final double minClawSpeed = -1;
     public static final double maxClawSpeed = 1;
 
-    public static final double coneClawSetPoint = 10.0; // TODO: Dummy value
-    public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
-    public static final double openClawSetPoint = 40.0; // TODO: Dummy value
+    public static final double coneClawSetPoint = 5.0;
+    // public static final double cubeClawSetPoint = 0.1; // TODO: Dummy value
+    public static final double openClawSetPoint = 40.0;
 
     public static final double clawPIDEpsilon = 0.5;
 

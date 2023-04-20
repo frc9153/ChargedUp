@@ -70,13 +70,13 @@ public class RobotContainer {
                                         .withTimeout(Constants.Autonomous.sleepingDuration));
 
         public final Command scoreAndBalance = Commands.sequence(
-                Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
-                                new SoftClawStopper(m_claw).withTimeout(1.0)),
-                new ExtruderinatorControl(m_extruderinator,
-                                Constants.Extruderinator.outExtruderSetPoint),
-                                new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
-                                new WaitCommand(2.0),
-                new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
+                        Commands.parallel(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
+                                        new SoftClawStopper(m_claw).withTimeout(1.0)),
+                        new ExtruderinatorControl(m_extruderinator,
+                                        Constants.Extruderinator.outExtruderSetPoint),
+                        new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2),
+                        new WaitCommand(2.0),
+                        new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint),
                         new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedBalance,
                                         () -> -Constants.Autonomous.sleepingRotation)
                                         .withTimeout(Constants.Autonomous.sleepingDurationBalance),
@@ -234,10 +234,11 @@ public class RobotContainer {
                                                 .withTimeout(1.0));
                 m_operatorController.povUp()
                                 .onTrue(new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint)
-                                                .withTimeout(2.0));
+                                                .withTimeout(3.0));
 
                 /* - Eternal Balance */
-                m_driverController.start().toggleOnTrue(new EternalBalanceToggle(() -> m_gyro.getRoll(), m_drivetrain));
+                // m_driverController.start().toggleOnTrue(new EternalBalanceToggle(() ->
+                // m_gyro.getRoll(), m_drivetrain));
 
                 /* - Calibrate Claw */
                 m_operatorController.start().onTrue(new SoftClawStopper(m_claw).withTimeout(1.0));
