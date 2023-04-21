@@ -5,6 +5,10 @@
 package frc.robot;
 
 public final class Constants {
+  public static class AngleSnap {
+    public static final double rotSpeed = 0.2;
+    public static final double errorTolerance = 0.5;
+  }
   public static class Control {
     public static final int driverControllerPort = 0;
     public static final int operatorControllerPort = 1;
@@ -112,13 +116,13 @@ public final class Constants {
 
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -0.6;
-    public static final double maxExtruderSpeed = 0.6;
+    public static final double minExtruderSpeed = -0.65;
+    public static final double maxExtruderSpeed = 0.65;
 
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;
     public static final double halfExtruderSetPoint = 18;
-    public static final double outExtruderSetPoint = 66; // max 67
+    public static final double outExtruderSetPoint = 60; // max 67
 
     public static final double extruderPIDEpsilon = 0.01;
 

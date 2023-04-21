@@ -11,6 +11,7 @@ import frc.robot.commands.ExtruderinatorControl;
 import frc.robot.commands.ExtruderinatorManualControl;
 import frc.robot.commands.JuiceGiver;
 import frc.robot.commands.ShoulderManualControl;
+import frc.robot.commands.SnapToAngle;
 import frc.robot.commands.SoftClawStopper;
 import frc.robot.commands.ShoulderControl;
 import frc.robot.commands.EternalBalanceToggle;
@@ -276,5 +277,8 @@ public class RobotContainer {
 
                 m_driverController.rightTrigger().onTrue(new JuiceGiver(m_drivetrain, false));
                 m_driverController.rightTrigger().onFalse(new JuiceGiver(m_drivetrain, true));
+
+                m_driverController.rightBumper().onTrue(new SnapToAngle(null, null, 90).withTimeout(2.0));
+                m_driverController.leftBumper().onTrue(new SnapToAngle(null, null, -90).withTimeout(2.0));
         }
 }
