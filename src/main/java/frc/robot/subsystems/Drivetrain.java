@@ -15,27 +15,40 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Drivetrain extends SubsystemBase {
-  MotorControllerGroup leftMotors = new MotorControllerGroup(
+  MotorControllerGroup m_leftMotors = new MotorControllerGroup(
       new CANSparkMax(Constants.Drivetrain.leftFrontMotorID, MotorType.kBrushless), // Left front
       new CANSparkMax(Constants.Drivetrain.leftBackMotorID, MotorType.kBrushless) // Left back
   );
 
-  MotorControllerGroup rightMotors = new MotorControllerGroup(
+  MotorControllerGroup m_rightMotors = new MotorControllerGroup(
       new CANSparkMax(Constants.Drivetrain.rightFrontMotorID, MotorType.kBrushless), // Right front
       new CANSparkMax(Constants.Drivetrain.rightBackMotorID, MotorType.kBrushless) // Right back
   );
 
-  DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
-  SlewRateLimiter moveLimiter = new SlewRateLimiter(1.8);
-  SlewRateLimiter rotateLimiter = new SlewRateLimiter(1.8);
+  DifferentialDrive m_differentialDrive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  SlewRateLimiter m_moveLimiter = new SlewRateLimiter(1.8);
+  SlewRateLimiter m_rotateLimiter = new SlewRateLimiter(1.8);
+  boolean m_juiceApplied = true;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    rightMotors.setInverted(true);
+    m_rightMotors.setInverted(true);
   }
 
   public void arcadeDrive(double moveSpeed, double rotateSpeed) {
-    differentialDrive.arcadeDrive(moveLimiter.calculate(moveSpeed), rotateLimiter.calculate(rotateSpeed));
+    if (m_juiceApplied) {
+      m_differentialDrive.arcadeDrive(m_moveLimiter.calculate(moveSpeed), m_rotateLimiter.calculate(rotateSpeed));
+    } else {
+      m_differentialDrive.arcadeDrive(
+          moveSpeed * Constants.Drivetrain.noJuiceMultiplier,
+          rotateSpeed * Constants.Drivetrain.noJuiceMultiplier);
+    }
+  }
+
+  public void setJuiceApplied(boolean juiceApplied) {
+    m_juiceApplied = juiceApplied;
+    // printf not working :^(
+    System.out.println("Juice" + String.valueOf(m_juiceApplied));
   }
 
   @Override

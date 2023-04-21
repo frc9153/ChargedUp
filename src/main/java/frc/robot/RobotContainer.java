@@ -9,6 +9,7 @@ import frc.robot.commands.ClawControl;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.ExtruderinatorControl;
 import frc.robot.commands.ExtruderinatorManualControl;
+import frc.robot.commands.JuiceGiver;
 import frc.robot.commands.ShoulderManualControl;
 import frc.robot.commands.SoftClawStopper;
 import frc.robot.commands.ShoulderControl;
@@ -56,6 +57,16 @@ public class RobotContainer {
                         new ClawControl(m_claw, Constants.Claw.openClawSetPoint).withTimeout(2.0),
                         new WaitCommand(2.0),
                         new ShoulderControl(m_shoulder, Constants.Shoulder.halfShoulderSetPoint),
+                        new WaitCommand(1.0),
+                        new ShoulderManualControl(m_shoulder, () -> Constants.Shoulder.maxShoulderSpeed)
+                                        .withTimeout(0.2),
+                        new ShoulderManualControl(m_shoulder, () -> Constants.Shoulder.minShoulderSpeed)
+                                        .withTimeout(0.2),
+                        new ShoulderManualControl(m_shoulder, () -> Constants.Shoulder.maxShoulderSpeed)
+                                        .withTimeout(0.2),
+                        new ShoulderManualControl(m_shoulder, () -> Constants.Shoulder.minShoulderSpeed)
+                                        .withTimeout(0.2),
+                        new WaitCommand(1.0),
                         new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint));
 
         public final Command scoreAndMobility = Commands.sequence(
@@ -262,5 +273,8 @@ public class RobotContainer {
 
                 /* - Calibrate Claw */
                 m_operatorController.start().onTrue(new SoftClawStopper(m_claw).withTimeout(3.0));
+
+                m_driverController.rightTrigger().onTrue(new JuiceGiver(m_drivetrain, false));
+                m_driverController.rightTrigger().onFalse(new JuiceGiver(m_drivetrain, true));
         }
 }

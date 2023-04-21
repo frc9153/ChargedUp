@@ -41,7 +41,8 @@ public final class Constants {
     public static final int rightFrontMotorID = 4;
     public static final int rightBackMotorID = 1;
 
-    public static final double manualControlMultiplier = 1;//0.7
+    public static final double manualControlMultiplier = 1;// 0.7
+    public static final double noJuiceMultiplier = 0.4;
   }
 
   public static class Claw {
@@ -108,11 +109,11 @@ public final class Constants {
     public static final double extruderI = 0.0;
     public static final double extruderD = 0.0;
     public static final double extruderIZone = 0.0;
-    
+
     public static final double extruderFF = 0.0;
 
-    public static final double minExtruderSpeed = -0.5;
-    public static final double maxExtruderSpeed = 0.5;
+    public static final double minExtruderSpeed = -0.6;
+    public static final double maxExtruderSpeed = 0.6;
 
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;
