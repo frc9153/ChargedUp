@@ -122,7 +122,7 @@ public final class Constants {
     public static final double storeExtruderSetPoint = 0.0;
     public static final double inExtruderSetPoint = 13.0;
     public static final double halfExtruderSetPoint = 18;
-    public static final double outExtruderSetPoint = 60; // max 67
+    public static final double outExtruderSetPoint = 65; // max 67
 
     public static final double extruderPIDEpsilon = 0.01;
 

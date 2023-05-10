@@ -51,7 +51,7 @@ public class RobotContainer {
         public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
 
         public final Command score = Commands.sequence(
-                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        // new SoftClawStopper(m_claw).withTimeout(2.0),
                         new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
                         new ExtruderinatorControl(m_extruderinator,
                                         Constants.Extruderinator.outExtruderSetPoint).withTimeout(1.5),
@@ -71,7 +71,7 @@ public class RobotContainer {
                         new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.storeExtruderSetPoint));
 
         public final Command scoreAndMobility = Commands.sequence(
-                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        // new SoftClawStopper(m_claw).withTimeout(2.0),
                         new ShoulderControl(m_shoulder, Constants.Shoulder.upShoulderSetPoint),
                         new ExtruderinatorControl(m_extruderinator, Constants.Extruderinator.outExtruderSetPoint)
                                         .withTimeout(1.5),
@@ -86,7 +86,7 @@ public class RobotContainer {
                                         .withTimeout(Constants.Autonomous.sleepingDuration));
 
         public final Command hybridMobility = Commands.sequence(
-                        new SoftClawStopper(m_claw).withTimeout(2.0),
+                        // new SoftClawStopper(m_claw).withTimeout(2.0),
                         new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
                                         () -> -Constants.Autonomous.sleepingRotation)
                                         .withTimeout(Constants.Autonomous.sleepingDuration / 4.0),
@@ -112,7 +112,7 @@ public class RobotContainer {
          * new EternalBalanceToggle(() -> m_gyro.getPitch(), m_drivetrain));
          */
 
-        public final Command doAbsolutelyNothing = new SoftClawStopper(m_claw).withTimeout(2.0);
+        public final Command doAbsolutelyNothing = Commands.none();//new SoftClawStopper(m_claw).withTimeout(2.0);
 
         /*
          * public final Command asleepCommand = Commands.sequence(
