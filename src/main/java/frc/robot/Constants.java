@@ -6,8 +6,10 @@ package frc.robot;
 
 public final class Constants {
   public static class AngleSnap {
-    public static final double rotSpeed = 0.2;
-    public static final double errorTolerance = 0.5;
+    // 0.3 SLOW
+    // 0.5 FAST
+    public static final double rotSpeed = 0.35;
+    public static final double errorTolerance = 1.0;
   }
   public static class Control {
     public static final int driverControllerPort = 0;

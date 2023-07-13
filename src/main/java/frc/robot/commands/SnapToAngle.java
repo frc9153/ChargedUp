@@ -21,13 +21,16 @@ public class SnapToAngle extends CommandBase {
     m_drivetrain = drivetrain;
     m_yawSupplier = yawSupplier;
     m_increment = increment;
+
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_target = m_yawSupplier.getAsDouble() + m_increment;
+    m_target = ((m_yawSupplier.getAsDouble() + m_increment + 180.0 + 360.0) % 360.0) - 180.0;
     SmartDashboard.putNumber("Rot Target", m_target);
+    SmartDashboard.putNumber("Raw Crazy Target", m_yawSupplier.getAsDouble());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,16 +38,14 @@ public class SnapToAngle extends CommandBase {
   public void execute() {
     double rotSpeed = Constants.AngleSnap.rotSpeed;
 
+    // Starts as [-180, 180], we mess with it
     double currentAngle = m_yawSupplier.getAsDouble();
     SmartDashboard.putNumber("Yaw", currentAngle);
 
-    // The robot knows where it is because it knows where it isn't
-    double error = currentAngle - m_target;
-    SmartDashboard.putNumber("Yaw Target Error", error);
-
     // If the delta is negative, we need to rotate the opposite way!!!
-    if (error < 0) rotSpeed *= -1;
+    if (m_increment > 0) rotSpeed *= -1;
 
+    SmartDashboard.putNumber("Rot Delta", rotSpeed);
     m_drivetrain.arcadeDrive(0.0, rotSpeed);
   }
 
@@ -53,6 +54,7 @@ public class SnapToAngle extends CommandBase {
   public void end(boolean interrupted) {
     // STOP!!!!! STOPSTOPSTOP STOPPP!!!
     m_drivetrain.arcadeDrive(0.0, 0.0);
+    System.out.println("We have escaped!");
   }
 
   // Returns true when the command should end.

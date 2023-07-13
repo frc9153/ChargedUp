@@ -278,7 +278,7 @@ public class RobotContainer {
                 m_driverController.rightTrigger().onTrue(new JuiceGiver(m_drivetrain, false));
                 m_driverController.rightTrigger().onFalse(new JuiceGiver(m_drivetrain, true));
 
-                m_driverController.rightBumper().onTrue(new SnapToAngle(null, null, 90).withTimeout(2.0));
-                m_driverController.leftBumper().onTrue(new SnapToAngle(null, null, -90).withTimeout(2.0));
+                m_driverController.rightBumper().onTrue(new SnapToAngle(m_drivetrain, () -> m_gyro.getYaw(), 90));//.withTimeout(7.0));
+                m_driverController.leftBumper().onTrue(new SnapToAngle(m_drivetrain, () -> m_gyro.getYaw(), -90));//.withTimeout(7.0));
         }
 }
