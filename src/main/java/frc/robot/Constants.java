@@ -10,7 +10,9 @@ public final class Constants {
     // 0.5 FAST
     public static final double rotSpeed = 0.35;
     public static final double errorTolerance = 1.0;
+    public static final double tooIttyBittyAngle = 5.0;
   }
+
   public static class Control {
     public static final int driverControllerPort = 0;
     public static final int operatorControllerPort = 1;

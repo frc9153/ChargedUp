@@ -191,15 +191,17 @@ public class RobotContainer {
                                                                                                                // -
                                                                                                                // Close
 
-                m_operatorController.rightTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));
-                m_operatorController.leftTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.coneClawSetPoint));
+                // m_operatorController.rightTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.openClawSetPoint));
+                // m_operatorController.leftTrigger().onTrue(new ClawControl(m_claw, Constants.Claw.coneClawSetPoint));
 
                 /* - Shoulder - */
-                m_shoulder.setDefaultCommand(new ShoulderManualControl(
-                                m_shoulder,
-                                () -> -m_operatorController.getRawAxis(Constants.Control.shoulderAxis)
-                                                + 0.25 + (0.2 * (m_extruderinator.getEncoder() / 40))));
-                // + Constants.Shoulder.shoulderBrakeFactor));
+                System.out.println("Killed shoulder watch out");
+                // m_shoulder.setDefaultCommand(new ShoulderManualControl(
+                //                 m_shoulder,
+                //                 () -> -m_operatorController.getRawAxis(Constants.Control.shoulderAxis)
+                //                                 + 0.25 + (0.2 * (m_extruderinator.getEncoder() / 40))));
+                
+                                                // + Constants.Shoulder.shoulderBrakeFactor));
 
                 /* - Extruderinator - */
                 // Reset on limit switch

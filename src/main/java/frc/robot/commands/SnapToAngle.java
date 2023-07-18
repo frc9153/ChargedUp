@@ -28,7 +28,26 @@ public class SnapToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_target = ((m_yawSupplier.getAsDouble() + m_increment + 180.0 + 360.0) % 360.0) - 180.0;
+    // m_target = ((m_yawSupplier.getAsDouble() + m_increment + 180.0 + 360.0) % 360.0) - 180.0;
+    m_target = m_yawSupplier.getAsDouble();
+    double pos_increment = Math.abs(m_increment);
+
+    if (m_increment < 0) {
+      m_target = Math.floor(m_target / pos_increment) * pos_increment;
+    } else {
+      m_target = Math.ceil(m_target / pos_increment) * pos_increment;
+    }
+
+    // If we're going so so so smally, go bigger
+    if (getRotationError() < Constants.AngleSnap.tooIttyBittyAngle) {
+      System.out.println("Hello! We are too small");
+      m_target += m_increment;
+      m_target = ((m_target + 360.0 + 180.0) % 360.0) - 180.0;
+    } else {
+      System.out.println("Yeahhhh its big'");
+      System.out.println(getRotationError());
+    }
+    
     SmartDashboard.putNumber("Rot Target", m_target);
     SmartDashboard.putNumber("Raw Crazy Target", m_yawSupplier.getAsDouble());
   }
@@ -57,10 +76,13 @@ public class SnapToAngle extends CommandBase {
     System.out.println("We have escaped!");
   }
 
+  private double getRotationError() {
+    return Math.abs(Math.abs(m_yawSupplier.getAsDouble()) - Math.abs(m_target));
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double error = Math.abs(m_yawSupplier.getAsDouble() - m_target);
-    return error < Constants.AngleSnap.errorTolerance;
+    return getRotationError() < Constants.AngleSnap.errorTolerance;
   }
 }
