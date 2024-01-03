@@ -33,7 +33,8 @@ public class DriveArcade extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.arcadeDrive(m_move.getAsDouble(), m_rotate.getAsDouble());
+    // Tone down speed for STEM Day 3rd graders
+    m_drivetrain.arcadeDrive(m_move.getAsDouble()/*0.4*/, m_rotate.getAsDouble()/*0.4*/);
   }
 
   // Called once the command ends or is interrupted.

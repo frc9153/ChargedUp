@@ -145,4 +145,9 @@ public final class Constants {
     public static final double balanceClampMin = -0.5;
     public static final double balanceClampMax = 0.5;
   }
+
+  public static class TargetCone {
+    public static final double rotateSpeed = 0.25;
+    public static final double deadzone = 3.0;
+  }
 }

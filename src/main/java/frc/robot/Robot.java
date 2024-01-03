@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
     // chooser.addOption("Score and Balance", m_robotContainer.scoreAndBalance);
     chooser.addOption("Hybrid Mobility", m_robotContainer.hybridMobility);
     chooser.addOption("Do Nothing At All", m_robotContainer.doAbsolutelyNothing);
+    chooser.addOption("Test Targetting", m_robotContainer.targetTesting);
     // chooser.addOption("Test Claw Calibration", m_robotContainer.clawTestCommand);
 
     SmartDashboard.putData("Autonomous Routine", chooser);

@@ -16,10 +16,12 @@ import frc.robot.commands.SoftClawStopper;
 import frc.robot.commands.ShoulderControl;
 import frc.robot.commands.EternalBalanceToggle;
 import frc.robot.commands.YikesWeSmushedIt;
+import frc.robot.commands.TargetCone;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extruderinator;
 import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.NetworkTableDrive;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -49,6 +51,7 @@ public class RobotContainer {
         public final Shoulder m_shoulder = new Shoulder();
         public final Extruderinator m_extruderinator = new Extruderinator();
         public final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
+        public final NetworkTableDrive m_network_drive = new NetworkTableDrive(m_drivetrain);
 
         public final Command score = Commands.sequence(
                         // new SoftClawStopper(m_claw).withTimeout(2.0),
@@ -93,6 +96,8 @@ public class RobotContainer {
                         new DriveArcade(m_drivetrain, () -> -Constants.Autonomous.sleepingSpeedForward,
                                         () -> -Constants.Autonomous.sleepingRotation)
                                         .withTimeout(Constants.Autonomous.sleepingDuration));
+
+        public final Command targetTesting = new TargetCone(m_drivetrain);
 
         /*
          * public final Command scoreAndBalance = Commands.sequence(
